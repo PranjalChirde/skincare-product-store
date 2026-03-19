@@ -199,27 +199,27 @@
             <div class="form-grid">
               <div class="form-group full">
                 <label class="form-label">Full Name</label>
-                <input type="text" class="form-control" placeholder="Pranjal Chirde" required />
+                <input type="text" id="ship-name" class="form-control" placeholder="Pranjal Chirde" required />
               </div>
               <div class="form-group full">
                 <label class="form-label">Address</label>
-                <input type="text" class="form-control" placeholder="House No, Street, Landmark" required />
+                <input type="text" id="ship-address" class="form-control" placeholder="House No, Street, Landmark" required />
               </div>
               <div class="form-group">
                 <label class="form-label">City</label>
-                <input type="text" class="form-control" placeholder="Mumbai" required />
+                <input type="text" id="ship-city" class="form-control" placeholder="Mumbai" required />
               </div>
               <div class="form-group">
                 <label class="form-label">Pincode</label>
-                <input type="text" class="form-control" placeholder="400001" required />
+                <input type="text" id="ship-pincode" class="form-control" placeholder="400001" required />
               </div>
               <div class="form-group">
                 <label class="form-label">Phone</label>
-                <input type="tel" class="form-control" placeholder="+91 98765 43210" required />
+                <input type="tel" id="ship-phone" class="form-control" placeholder="+91 98765 43210" required />
               </div>
               <div class="form-group">
                 <label class="form-label">Email</label>
-                <input type="email" class="form-control" placeholder="pranjal@example.com" required />
+                <input type="email" id="ship-email" class="form-control" placeholder="pranjal@example.com" required />
               </div>
             </div>
             <button type="submit" class="btn btn-primary" style="width:100%;margin-top:20px;justify-content:center;">Continue to Payment →</button>
@@ -525,11 +525,48 @@
       el.querySelector('input').checked = true;
   }
 
-  function handleFinalOrder() {
+  async function handleFinalOrder() {
+    const cart = JSON.parse(localStorage.getItem('clearo_cart') || '[]');
+    if (cart.length === 0) return;
+
     const orderId = '#CS-2026-' + Math.random().toString(36).substr(2, 5).toUpperCase();
-    document.getElementById('order-id').textContent = orderId;
-    document.getElementById('checkout-modal').style.display = 'flex';
-    localStorage.setItem('clearo_cart', '[]');
+    const total = document.getElementById('summary-total').textContent.replace('₹', '').replace(',', '');
+    const payMethod = document.querySelector('input[name="pay"]:checked')?.parentElement?.textContent.trim() || 'Not Selected';
+
+    const orderData = {
+      orderId,
+      customer: {
+        name: document.getElementById('ship-name').value,
+        email: document.getElementById('ship-email').value,
+        phone: document.getElementById('ship-phone').value,
+        address: document.getElementById('ship-address').value,
+        city: document.getElementById('ship-city').value,
+        pincode: document.getElementById('ship-pincode').value
+      },
+      items: cart,
+      total: parseFloat(total),
+      paymentMethod: payMethod
+    };
+
+    try {
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        document.getElementById('order-id').textContent = orderId;
+        document.getElementById('checkout-modal').style.display = 'flex';
+        localStorage.setItem('clearo_cart', '[]');
+      } else {
+        showToast(result.error || 'Failed to place order', '❌');
+      }
+    } catch (err) {
+      console.error('Order error:', err);
+      showToast('Network error. Order might not have been sent.', '❌');
+    }
   }
 
   function closeModal() {
