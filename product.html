@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anti-Acne Serum – ClearoSkin</title>
+  <meta name="description" content="ClearoSkin Anti-Acne Serum reduces pimples & scars. Dermatologically tested. Buy now at ₹699." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .product-page { padding: 60px 0; background: var(--white); }
+    .product-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .gallery { position: sticky; top: 100px; }
+    .gallery-main { border-radius: var(--radius-lg); overflow: hidden; background: var(--mint-light); aspect-ratio: 1; margin-bottom: 16px; border: 1px solid var(--border); }
+    .gallery-main img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .gallery-main:hover img { transform: scale(1.04); }
+    .gallery-thumbs { display: flex; gap: 12px; }
+    .gallery-thumb { width: 80px; height: 80px; border-radius: var(--radius-md); overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: var(--transition); flex-shrink: 0; }
+    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-thumb:hover, .gallery-thumb.active { border-color: var(--teal); }
+    .product-page-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; color: var(--text-dark); margin-bottom: 12px; }
+    .product-page-rating { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .product-page-rating .stars { font-size: 1rem; color: #FFB800; }
+    .product-page-rating a { font-size: 0.88rem; color: var(--teal); text-decoration: underline; }
+    .product-page-price { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
+    .product-page-price .current { font-family: var(--font-head); font-size: 2rem; font-weight: 800; color: var(--teal-dark); }
+    .product-page-price .original { font-size: 1.1rem; color: var(--text-light); text-decoration: line-through; }
+    .product-page-price .save-pct { background: #ffe8e8; color: #e74c3c; font-size: 0.8rem; font-weight: 700; padding: 4px 12px; border-radius: var(--radius-pill); font-family: var(--font-head); }
+    .product-divider { height: 1px; background: var(--border); margin: 24px 0; }
+    .variant-label { font-family: var(--font-head); font-size: 0.85rem; font-weight: 700; color: var(--text-dark); margin-bottom: 10px; }
+    .variant-options { display: flex; gap: 10px; margin-bottom: 20px; }
+    .variant-btn { padding: 8px 20px; border-radius: var(--radius-pill); border: 2px solid var(--border); font-family: var(--font-head); font-size: 0.82rem; font-weight: 600; color: var(--text-dark); cursor: pointer; transition: var(--transition); background: white; }
+    .variant-btn:hover, .variant-btn.active { border-color: var(--teal); color: var(--teal); background: var(--teal-glow); }
+    .quantity-wrap { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .quantity-label { font-family: var(--font-head); font-size: 0.85rem; font-weight: 700; }
+    .quantity-control { display: flex; align-items: center; border: 2px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+    .qty-btn { width: 44px; height: 44px; font-size: 1.2rem; color: var(--text-dark); cursor: pointer; background: none; border: none; transition: var(--transition); }
+    .qty-btn:hover { background: var(--mint-light); color: var(--teal); }
+    .qty-input { width: 56px; text-align: center; border: none; border-left: 2px solid var(--border); border-right: 2px solid var(--border); font-family: var(--font-head); font-size: 1rem; font-weight: 700; color: var(--text-dark); outline: none; height: 44px; }
+    .product-cta-group { display: flex; gap: 12px; margin-bottom: 24px; }
+    .atc-main { flex: 1; padding: 16px; font-size: 1rem; justify-content: center; border-radius: var(--radius-md); }
+    .buy-now-btn { flex: 1; background: var(--text-dark); color: white; font-family: var(--font-head); font-weight: 700; padding: 16px; border-radius: var(--radius-md); transition: var(--transition); font-size: 1rem; }
+    .buy-now-btn:hover { background: #000; }
+    .product-trust { display: flex; gap: 16px; flex-wrap: wrap; padding: 20px; background: var(--mint-light); border-radius: var(--radius-md); border: 1px solid var(--border); }
+    .p-trust-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-family: var(--font-head); font-weight: 600; color: var(--text-mid); }
+    .tab-buttons { display: flex; border-bottom: 2px solid var(--border); margin: 32px 0 24px; gap: 0; }
+    .tab-btn { padding: 14px 24px; font-family: var(--font-head); font-size: 0.9rem; font-weight: 600; color: var(--text-light); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: var(--transition); cursor: pointer; background: none; border-top: none; border-left: none; border-right: none; }
+    .tab-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .b-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+    .b-item .ico { font-size: 1.2rem; margin-top: 2px; flex-shrink: 0; }
+    .b-item div strong { font-family: var(--font-head); font-size: 0.9rem; color: var(--text-dark); display: block; margin-bottom: 2px; }
+    .b-item div span { font-size: 0.83rem; color: var(--text-mid); }
+    .review-item { background: var(--mint-light); border-radius: var(--radius-md); padding: 20px; border: 1px solid var(--border); margin-bottom: 16px; }
+    .review-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .review-reviewer strong { font-family: var(--font-head); font-size: 0.9rem; }
+    .review-reviewer span { font-size: 0.78rem; color: var(--text-light); display: block; }
+    #sticky-atc { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--border); padding: 16px 24px; z-index: 800; display: flex; align-items: center; justify-content: space-between; gap: 16px; box-shadow: 0 -4px 16px rgba(0,0,0,0.08); transform: translateY(100%); transition: transform var(--transition); }
+    #sticky-atc.visible { transform: translateY(0); }
+    .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    @media (max-width: 768px) {
+      .product-layout { grid-template-columns: 1fr; gap: 32px; }
+      .gallery { position: static; }
+      .product-cta-group { flex-direction: column; }
+      .related-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="announcement-bar">🎉 <span>FREE SHIPPING</span> on orders above ₹499 &nbsp;|&nbsp; Use code <span>CLEAR20</span> for 20% off!</div>
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Clearo<span>Skin</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#collections">Collections</a></li>
+      <li><a href="index.html#products">Shop</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="cart.html" class="nav-icon-btn" title="Cart">🛒<span class="cart-count" id="cart-count">0</span></a>
+      <a href="login.html" class="btn btn-outline btn-sm" id="nav-login-btn">Login</a>
+      <a href="signup.html" class="btn btn-primary btn-sm" id="nav-signup-btn">Sign Up</a>
+      <div class="hamburger" id="hamburger-btn"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<section class="product-page">
+  <div class="container">
+    <div class="product-breadcrumb" style="display:flex;gap:8px;font-size:0.82rem;color:var(--text-light);margin-bottom:16px;">
+      <a href="index.html" style="color:var(--text-light);">Home</a> /
+      <a href="index.html#products" style="color:var(--text-light);">Shop</a> /
+      Anti-Acne Serum
+    </div>
+    <div class="product-layout">
+      <!-- Gallery -->
+      <div class="gallery">
+        <div class="gallery-main">
+          <img id="main-img" src="images/product_serum.png" alt="Anti-Acne Serum" />
+        </div>
+        <div class="gallery-thumbs">
+          <div class="gallery-thumb active" onclick="switchImg(this,'images/product_serum.png')">
+            <img src="images/product_serum.png" alt="Thumb 1" />
+          </div>
+          <div class="gallery-thumb" onclick="switchImg(this,'images/product_face_wash.png')">
+            <img src="images/product_face_wash.png" alt="Thumb 2" />
+          </div>
+          <div class="gallery-thumb" onclick="switchImg(this,'images/product_moisturizer.png')">
+            <img src="images/product_moisturizer.png" alt="Thumb 3" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Panel -->
+      <div>
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+          <span class="badge">⚡ Most Effective</span>
+          <span class="badge badge-teal">✅ In Stock</span>
+        </div>
+        <h1 class="product-page-title">Anti-Acne Serum</h1>
+        <p style="color:var(--text-mid);font-size:0.9rem;margin-bottom:14px;">Reduces pimples, fades scars, and controls oil — fast-absorbing, lightweight, and dermatologically tested.</p>
+        <div class="product-page-rating">
+          <span class="stars">★★★★★</span>
+          <strong style="font-family:var(--font-head);font-size:0.9rem;">4.9</strong>
+          <a href="#reviews">218 reviews</a>
+          <span style="font-size:0.82rem;color:var(--text-light);">| 2.1K+ sold</span>
+        </div>
+        <div class="product-page-price">
+          <span class="current">₹699</span>
+          <span class="original">₹999</span>
+          <span class="save-pct">Save 30%</span>
+        </div>
+        <p style="font-size:0.78rem;color:var(--text-light);margin-bottom:20px;">Inclusive of all taxes. Free shipping on orders ₹499+.</p>
+        <div class="product-divider"></div>
+
+        <div class="variant-label">Size</div>
+        <div class="variant-options">
+          <button class="variant-btn active" onclick="selectVariant(this)">30ml</button>
+          <button class="variant-btn" onclick="selectVariant(this)">50ml (+₹200)</button>
+          <button class="variant-btn" onclick="selectVariant(this)">Bundle Pack</button>
+        </div>
+
+        <div class="quantity-wrap">
+          <span class="quantity-label">Quantity</span>
+          <div class="quantity-control">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <input type="number" class="qty-input" id="qty" value="1" min="1" max="10" readonly />
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+          <span style="font-size:0.8rem;color:var(--text-light);">Only 24 left!</span>
+        </div>
+
+        <div class="product-cta-group">
+          <button class="btn btn-primary atc-main" id="page-atc-btn" onclick="addToCartPage()">🛒 Get Clear Skin Now</button>
+          <button class="buy-now-btn" onclick="window.location.href='cart.html'">⚡ Buy Now</button>
+        </div>
+
+        <div class="product-trust">
+          <div class="p-trust-item">🧪 Derm-Tested</div>
+          <div class="p-trust-item">🔄 30-Day Return</div>
+          <div class="p-trust-item">🚚 Fast Delivery</div>
+          <div class="p-trust-item">🔒 Secure Payment</div>
+        </div>
+
+        <div style="margin-top:16px;background:var(--teal-glow);border-radius:var(--radius-md);padding:12px 16px;font-family:var(--font-head);font-size:0.82rem;color:var(--teal-dark);display:flex;align-items:center;gap:8px;">
+          🔥 <span id="social-proof-ticker">14 people are viewing this right now</span>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tab-buttons">
+          <button class="tab-btn active" onclick="switchTab(this,'tab-benefits')">Benefits</button>
+          <button class="tab-btn" onclick="switchTab(this,'tab-ingredients')">Ingredients</button>
+          <button class="tab-btn" onclick="switchTab(this,'tab-how-to-use')">How to Use</button>
+        </div>
+        <div class="tab-content active" id="tab-benefits">
+          <div class="b-item"><span class="ico">✅</span><div><strong>Reduces Active Breakouts</strong><span>Salicylic acid targets clogged pores and reduces pimples in 3–5 days.</span></div></div>
+          <div class="b-item"><span class="ico">✨</span><div><strong>Fades Acne Scars</strong><span>Niacinamide brightens hyperpigmentation and evens skin tone over 3–4 weeks.</span></div></div>
+          <div class="b-item"><span class="ico">💧</span><div><strong>Hydrates Without Greasiness</strong><span>Lightweight hyaluronic acid formula absorbs instantly, no sticky residue.</span></div></div>
+          <div class="b-item"><span class="ico">🌿</span><div><strong>Anti-Bacterial Action</strong><span>Tea tree extract fights acne-causing bacteria without irritating skin.</span></div></div>
+        </div>
+        <div class="tab-content" id="tab-ingredients">
+          <div class="b-item"><span class="ico">🫙</span><div><strong>Salicylic Acid (2%)</strong><span>Oil-soluble BHA that penetrates pores to remove sebum and dead cells.</span></div></div>
+          <div class="b-item"><span class="ico">💉</span><div><strong>Niacinamide (4%)</strong><span>Vitamin B3 that reduces pore size, fades spots, and improves skin texture.</span></div></div>
+          <div class="b-item"><span class="ico">🌿</span><div><strong>Tea Tree Leaf Extract</strong><span>Natural anti-bacterial fighting Propionibacterium acnes.</span></div></div>
+          <div class="b-item"><span class="ico">💧</span><div><strong>Hyaluronic Acid</strong><span>Draws moisture into skin — hydrated even under active treatments.</span></div></div>
+          <p style="margin-top:12px;font-size:0.78rem;color:var(--text-light);">*Free from: Parabens, SLS, Sulfates, Fragrance, Mineral Oils</p>
+        </div>
+        <div class="tab-content" id="tab-how-to-use">
+          <div class="b-item"><span class="ico">1️⃣</span><div><strong>Cleanse</strong><span>Wash face with Acne Control Face Wash. Pat dry gently.</span></div></div>
+          <div class="b-item"><span class="ico">2️⃣</span><div><strong>Apply Serum</strong><span>Take 3–4 drops and apply all over face or targeted areas.</span></div></div>
+          <div class="b-item"><span class="ico">3️⃣</span><div><strong>Let It Absorb</strong><span>Wait 60 seconds. Do NOT rinse.</span></div></div>
+          <div class="b-item"><span class="ico">4️⃣</span><div><strong>Moisturize</strong><span>Follow with Oil-Free Moisturizer. Use AM & PM for best results.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+<section id="reviews" style="background:var(--mint-light);padding:60px 0;">
+  <div class="container">
+    <div style="margin-bottom:32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+      <div><span class="section-label">Customer Reviews</span><h2>What Customers Say</h2></div>
+      <div style="text-align:right;"><div style="font-size:2rem;font-weight:800;font-family:var(--font-head);">4.9/5</div><div style="color:#FFB800;font-size:1.3rem;">★★★★★</div><p style="font-size:0.8rem;color:var(--text-light);">218 reviews</p></div>
+    </div>
+    <div class="review-item">
+      <div class="review-header"><div class="review-reviewer"><strong>Priya S. — Mumbai</strong><span>⭐⭐⭐⭐⭐ Verified Purchase · March 12, 2026</span></div></div>
+      <p style="font-size:0.88rem;color:var(--text-mid);line-height:1.7;">"I had cystic acne for 3 years. This serum reduced my breakouts by 80% in 3 weeks. Dark spots have started fading too. Genuinely impressed!"</p>
+    </div>
+    <div class="review-item">
+      <div class="review-header"><div class="review-reviewer"><strong>Rahul K. — Delhi</strong><span>⭐⭐⭐⭐⭐ Verified Purchase · March 5, 2026</span></div></div>
+      <p style="font-size:0.88rem;color:var(--text-mid);line-height:1.7;">"Fast absorbing, no sticky feeling. Used it for 2 weeks and my whiteheads are almost gone. Paired it with the face wash — that combo is fire."</p>
+    </div>
+    <div class="review-item">
+      <div class="review-header"><div class="review-reviewer"><strong>Sneha V. — Pune</strong><span>⭐⭐⭐⭐★ Verified Purchase · February 28, 2026</span></div></div>
+      <p style="font-size:0.88rem;color:var(--text-mid);line-height:1.7;">"Acne scars have lightened noticeably in 5 weeks. The texture is watery and absorbs super quick. Will buy again. Shipping was also very fast!"</p>
+    </div>
+  </div>
+</section>
+
+<!-- Related Products -->
+<section style="background:var(--white);padding:60px 0;">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:36px;"><span class="section-label">Complete Your Routine</span><h2>Pair It With</h2></div>
+    <div class="related-grid">
+      <div class="product-card">
+        <div class="product-img-wrap"><img src="images/product_face_wash.png" alt="Face Wash" /></div>
+        <div class="product-info">
+          <div class="product-stars"><span class="stars">★★★★★</span><span>(324)</span></div>
+          <div class="product-name">Acne Control Face Wash</div>
+          <div class="product-price"><span class="price-current">₹299</span><span class="price-original">₹499</span></div>
+          <button class="product-atc-btn" onclick="addToCart(1,'Acne Control Face Wash',299,this)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img-wrap"><img src="images/product_moisturizer.png" alt="Moisturizer" /></div>
+        <div class="product-info">
+          <div class="product-stars"><span class="stars">★★★★☆</span><span>(176)</span></div>
+          <div class="product-name">Oil-Free Moisturizer</div>
+          <div class="product-price"><span class="price-current">₹499</span><span class="price-original">₹799</span></div>
+          <button class="product-atc-btn" onclick="addToCart(3,'Oil-Free Moisturizer',499,this)">Add to Cart</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-img-wrap"><img src="images/product_spot_cream.png" alt="Spot Cream" /></div>
+        <div class="product-info">
+          <div class="product-stars"><span class="stars">★★★★★</span><span>(94)</span></div>
+          <div class="product-name">Spot Removal Cream</div>
+          <div class="product-price"><span class="price-current">₹599</span><span class="price-original">₹899</span></div>
+          <button class="product-atc-btn" onclick="addToCart(4,'Spot Removal Cream',599,this)">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="background:var(--text-dark);padding:32px 24px;text-align:center;">
+  <a href="index.html" class="nav-logo" style="color:white;font-size:1.4rem;display:inline-block;margin-bottom:12px;">Clearo<span>Skin</span></a>
+  <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;">© 2026 ClearoSkin. All rights reserved.</p>
+</footer>
+
+<!-- Sticky ATC -->
+<div id="sticky-atc">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <img src="images/product_serum.png" style="width:48px;height:48px;border-radius:8px;object-fit:cover;" alt="Serum" />
+    <div><strong style="font-family:var(--font-head);font-size:1rem;display:block;">Anti-Acne Serum</strong><span style="font-size:0.85rem;color:var(--text-light);">30ml · Derm-Tested</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <span style="font-family:var(--font-head);font-size:1.3rem;font-weight:800;color:var(--teal-dark);">₹699</span>
+    <button class="btn btn-primary" onclick="addToCartPage()">🛒 Add to Cart</button>
+  </div>
+</div>
+
+<div id="toast"><span class="toast-icon">✅</span><span id="toast-msg">Added to cart!</span></div>
+
+<script src="script.js"></script>
+<script>
+  function switchImg(thumb, src) {
+    document.getElementById('main-img').src = src;
+    document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+  }
+  function selectVariant(btn) {
+    document.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  function changeQty(dir) {
+    const input = document.getElementById('qty');
+    const val = parseInt(input.value) + dir;
+    if (val >= 1 && val <= 10) input.value = val;
+  }
+  function addToCartPage() {
+    const qty = parseInt(document.getElementById('qty').value);
+    const btn = document.getElementById('page-atc-btn');
+    for (let i = 0; i < qty; i++) addToCart(2, 'Anti-Acne Serum', 699, btn);
+  }
+  function switchTab(btn, tabId) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  }
+  window.addEventListener('scroll', () => {
+    document.getElementById('sticky-atc').classList.toggle('visible', window.scrollY > 400);
+  });
+  const socialMessages = ['14 people are viewing this right now', '🔥 Rahul from Delhi just ordered!', '⚡ Only 24 units left', '👀 Priya from Mumbai just added to cart', '🔥 23 orders in last 24 hours'];
+  let tickerIdx = 0;
+  setInterval(() => {
+    tickerIdx = (tickerIdx + 1) % socialMessages.length;
+    const el = document.getElementById('social-proof-ticker');
+    if (el) el.textContent = socialMessages[tickerIdx];
+  }, 4000);
+</script>
+</body>
+</html>

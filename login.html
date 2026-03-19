@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – ClearoSkin</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Clearo<span>Skin</span></a>
+    
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#collections">Collections</a></li>
+      <li><a href="index.html#products">Shop</a></li>
+      <li><a href="index.html#about">Our Story</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="cart.html" class="nav-icon-btn" title="Cart">
+        🛒
+        <span class="cart-count" id="cart-count">0</span>
+      </a>
+      <a href="login.html" class="btn btn-outline btn-sm" id="nav-login-btn">Login</a>
+      <a href="signup.html" class="btn btn-primary btn-sm" id="nav-signup-btn">Sign Up</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════
+     AUTH SECTION (LOGIN)
+════════════════════════════════════════ -->
+<section class="auth-section">
+  <div class="auth-container reveal">
+    <h2 class="auth-title">Welcome Back</h2>
+    <p class="auth-sub">Log in to your account to continue</p>
+    
+    <div id="login-error" class="auth-error" style="display: none;"></div>
+    
+    <form id="login-form" class="auth-form" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required />
+      </div>
+      
+      <button type="submit" class="btn btn-primary auth-btn">Log In</button>
+    </form>
+    
+    <div class="auth-footer">
+      <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="nav-logo">Clearo<span>Skin</span></div>
+      <p>ClearoSkin is built to help people regain confidence through clear, healthy skin.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 ClearoSkin. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
