@@ -16,9 +16,9 @@
     .cart-item-meta { font-size: 0.8rem; color: var(--text-light); margin-bottom: 10px; }
     .cart-item-price { font-family: var(--font-head); font-size: 1rem; font-weight: 800; color: var(--teal-dark); }
     .cart-qty-control { display: flex; align-items: center; border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; width: fit-content; }
-    .cart-qty-btn { width: 36px; height: 36px; font-size: 1rem; cursor: pointer; background: none; border: none; color: var(--text-dark); transition: var(--transition); }
+    .cart-qty-btn { width: 44px; height: 44px; font-size: 1.2rem; cursor: pointer; background: none; border: none; color: var(--text-dark); transition: var(--transition); display: flex; align-items: center; justify-content: center; }
     .cart-qty-btn:hover { background: var(--mint-light); color: var(--teal); }
-    .cart-qty-val { width: 44px; text-align: center; font-family: var(--font-head); font-size: 0.9rem; font-weight: 700; border-left: 1px solid var(--border); border-right: 1px solid var(--border); height: 36px; line-height: 36px; }
+    .cart-qty-val { width: 44px; text-align: center; font-family: var(--font-head); font-size: 0.95rem; font-weight: 700; border-left: 1px solid var(--border); border-right: 1px solid var(--border); height: 44px; line-height: 44px; }
     .cart-remove-btn { font-size: 0.78rem; color: #e74c3c; cursor: pointer; background: none; border: none; font-family: var(--font-head); font-weight: 600; margin-top: 8px; transition: opacity var(--transition); }
     .cart-remove-btn:hover { opacity: 0.65; }
     .cart-item-total { font-family: var(--font-head); font-size: 1rem; font-weight: 800; color: var(--text-dark); text-align: right; }
@@ -77,9 +77,9 @@
     .step-indicator.active { background: var(--teal); color: white; }
     .step-indicator.pending { background: var(--border); color: var(--text-light); }
     .step-indicator.completed { background: var(--teal-glow); color: var(--teal); border: 2px solid var(--teal); }
-    .step-line { flex: 1; height: 2px; background: var(--border); margin-bottom: 20px; transition: var(--transition); }
+    .step-line { flex: 1; height: 2px; background: var(--border); margin-bottom: 20px; transition: var(--transition); margin-top: 15px; }
     .step-line.active { background: var(--teal); }
-    .step-label { font-family: var(--font-head); font-size: 0.75rem; font-weight: 600; color: var(--text-light); transition: var(--transition); }
+    .step-label { font-family: var(--font-head); font-size: 0.72rem; font-weight: 600; color: var(--text-light); transition: var(--transition); display: block; margin-top: 4px; white-space: nowrap; }
     .step-label.active { color: var(--teal); font-weight: 700; }
 
     @media (max-width: 900px) { .cart-layout { grid-template-columns: 1fr; } .order-summary { position: static; } }
@@ -109,18 +109,18 @@
 <!-- Progress bar -->
 <div style="background:var(--mint-light);border-bottom:1px solid var(--border);padding:16px 0;">
   <div class="container">
-    <div style="display:flex;align-items:center;gap:0;max-width:500px;margin:0 auto;">
-      <div style="flex:1;text-align:center;">
+    <div style="display:flex;align-items:flex-start;gap:0;max-width:440px;margin:0 auto;position:relative;">
+      <div style="flex:1;text-align:center;position:relative;z-index:1;">
         <div class="step-indicator active" id="step-id-1">1</div>
         <span class="step-label active" id="step-lb-1">Cart</span>
       </div>
       <div class="step-line" id="step-ln-1"></div>
-      <div style="flex:1;text-align:center;">
+      <div style="flex:1;text-align:center;position:relative;z-index:1;">
         <div class="step-indicator pending" id="step-id-2">2</div>
-        <span class="step-label" id="step-lb-2">Information</span>
+        <span class="step-label" id="step-lb-2">Info</span>
       </div>
       <div class="step-line" id="step-ln-2"></div>
-      <div style="flex:1;text-align:center;">
+      <div style="flex:1;text-align:center;position:relative;z-index:1;">
         <div class="step-indicator pending" id="step-id-3">3</div>
         <span class="step-label" id="step-lb-3">Payment</span>
       </div>
@@ -405,7 +405,7 @@
     }
 
     // Update Page Header
-    const titles = ["Your Cart", "Shipping", "Payment"];
+    const titles = ["Your Cart", "Information", "Payment"];
     document.getElementById('page-title').textContent = titles[n-1];
     
     // Summary adjustments
