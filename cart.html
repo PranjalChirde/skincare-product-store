@@ -97,6 +97,7 @@
       <li><a href="index.html#products">Shop</a></li>
     </ul>
     <div class="nav-actions">
+      <a href="#" class="nav-icon-btn" title="Search" id="search-btn">🔍</a>
       <a href="cart.html" class="nav-icon-btn" title="Cart">🛒<span class="cart-count" id="cart-count">0</span></a>
       <a href="login.html" class="btn btn-outline btn-sm" id="nav-login-btn">Login</a>
       <a href="signup.html" class="btn btn-primary btn-sm" id="nav-signup-btn">Sign Up</a>
@@ -337,6 +338,26 @@
 </footer>
 
 <div id="toast"><span class="toast-icon">✅</span><span id="toast-msg">Added to cart!</span></div>
+
+<!-- ════════════════════════════════════════
+     SEARCH OVERLAY
+     ════════════════════════════════════════ -->
+<div id="search-overlay" class="search-overlay">
+  <div class="search-container">
+    <div class="search-header">
+      <div class="nav-logo">Clearo<span>Skin</span></div>
+      <button class="close-search" id="close-search">✕</button>
+    </div>
+    <div class="search-body">
+      <h2 class="search-title">What are you looking for?</h2>
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Search for acne wash, serum, skin type..." autofocus />
+      </div>
+      <div id="search-results-info" class="search-results-info"></div>
+    </div>
+  </div>
+</div>
 
 <script src="script.js"></script>
 <script>

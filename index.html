@@ -61,6 +61,7 @@
       <a href="#products">🛍️ Shop All</a>
       <a href="#about">📖 Our Story</a>
       <a href="#testimonials">⭐ Reviews</a>
+      <a href="#" onclick="document.getElementById('search-btn').click(); return false;">🔍 Search</a>
       <a href="cart.html">🛒 Cart</a>
     </nav>
     <a href="#newsletter" class="btn btn-primary" style="margin-top:auto;">Get 20% Off →</a>
@@ -839,6 +840,26 @@
       <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Claim My 20% Off →</button>
     </form>
     <p style="font-size:0.75rem;color:#aaa;margin-top:12px;">No spam. Unsubscribe anytime.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SEARCH OVERLAY
+     ════════════════════════════════════════ -->
+<div id="search-overlay" class="search-overlay">
+  <div class="search-container">
+    <div class="search-header">
+      <div class="nav-logo">Clearo<span>Skin</span></div>
+      <button class="close-search" id="close-search">✕</button>
+    </div>
+    <div class="search-body">
+      <h2 class="search-title">What are you looking for?</h2>
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Search for acne wash, serum, skin type..." autofocus />
+      </div>
+      <div id="search-results-info" class="search-results-info"></div>
+    </div>
   </div>
 </div>
 
