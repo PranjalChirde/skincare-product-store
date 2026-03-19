@@ -67,25 +67,74 @@ app.post('/api/signup', async (req, res) => {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
+      // Generate Verification Token (6-digit OTP for simplicity)
+      const verificationToken = Math.floor(100000 + Math.random() * 900000).toString();
+
       // Insert new user
-      db.run(`INSERT INTO users (name, email, password) VALUES (?, ?, ?)`, 
-        [name, email, hashedPassword], 
-        function(err) {
+      db.run(`INSERT INTO users (name, email, password, verification_token, is_verified) VALUES (?, ?, ?, ?, 0)`, 
+        [name, email, hashedPassword, verificationToken], 
+        async function(err) {
           if (err) return res.status(500).json({ error: 'Failed to register user.' });
           
-          // Generate JWT
-          const token = jwt.sign({ id: this.lastID, email, name }, SECRET_KEY, { expiresIn: '7d' });
-          
-          res.status(201).json({ 
-            message: 'User registered successfully!',
-            token,
-            user: { id: this.lastID, name, email }
-          });
+          // Send Verification Email
+          try {
+            let transporter = nodemailer.createTransport({
+              host: "smtp.ethereal.email",
+              port: 587,
+              secure: false,
+              auth: { user: 'prajwal.notification@ethereal.email', pass: 'mock_password_123' },
+            });
+
+            const emailHtml = `
+              <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; border: 1px solid #e0f0ee; border-radius: 12px; padding: 32px;">
+                <h1 style="color: #008080; text-align: center;">Verify Your Email</h1>
+                <p>Hi ${name},</p>
+                <p>Thank you for joining ClearoSkin! Please use the OTP below to verify your account:</p>
+                <div style="background: #f4fbfb; padding: 24px; text-align: center; border-radius: 8px; margin: 24px 0;">
+                  <span style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #008080;">${verificationToken}</span>
+                </div>
+                <p style="font-size: 14px; color: #666;">This code will expire in 1 hour. If you didn't create an account, you can safely ignore this email.</p>
+              </div>
+            `;
+
+            console.log(`[Email Simulation] Sending verification OTP ${verificationToken} to ${email}`);
+            // await transporter.sendMail({ from: '"ClearoSkin" <no-reply@clearoskin.com>', to: email, subject: "Verify your email", html: emailHtml });
+
+            res.status(201).json({ 
+              message: 'Account created! Please check your email for the verification code.',
+              requiresVerification: true,
+              email
+            });
+          } catch (mailErr) {
+            console.error('Email error:', mailErr);
+            res.status(201).json({ message: 'Account created, but failed to send verification email.' });
+          }
       });
     });
   } catch (error) {
     res.status(500).json({ error: 'Server error during registration.' });
   }
+});
+
+// 1b. Verify Email Route
+app.post('/api/verify', (req, res) => {
+  const { email, token } = req.body;
+
+  if (!email || !token) {
+    return res.status(400).json({ error: 'Email and verification token are required.' });
+  }
+
+  db.get(`SELECT * FROM users WHERE email = ? AND verification_token = ?`, [email, token], (err, user) => {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    if (!user) return res.status(400).json({ error: 'Invalid verification code.' });
+
+    db.run(`UPDATE users SET is_verified = 1, verification_token = NULL WHERE id = ?`, [user.id], (err) => {
+      if (err) return res.status(500).json({ error: 'Failed to verify account.' });
+      
+      const jwtToken = jwt.sign({ id: user.id, email: user.email, name: user.name }, SECRET_KEY, { expiresIn: '7d' });
+      res.json({ message: 'Email verified successfully!', token: jwtToken, user: { id: user.id, name: user.name, email: user.email } });
+    });
+  });
 });
 
 // 2. Login Route
@@ -99,6 +148,10 @@ app.post('/api/login', (req, res) => {
   db.get(`SELECT * FROM users WHERE email = ?`, [email], async (err, user) => {
     if (err) return res.status(500).json({ error: 'Database error' });
     if (!user) return res.status(401).json({ error: 'Invalid email or password.' });
+
+    if (user.is_verified === 0) {
+      return res.status(403).json({ error: 'Please verify your email address before logging in.', requiresVerification: true, email: user.email });
+    }
 
     // Compare password
     const validPassword = await bcrypt.compare(password, user.password);
@@ -199,11 +252,6 @@ app.post('/api/orders', async (req, res) => {
           </div>
         `;
 
-        // Send the mail
-        console.log(`[Email Simulation] Sending order details to prajwalra661@gmail.com...`);
-        // We will "simulate" a successful send for now, as we don't have real SMTP credentials.
-        // If we had them, we'd call: await transporter.sendMail({...})
-        
         res.status(200).json({ 
           message: 'Order placed successfully and notification sent!',
           orderId 
@@ -211,12 +259,55 @@ app.post('/api/orders', async (req, res) => {
 
       } catch (emailErr) {
         console.error('Email error:', emailErr.message);
-        // We still respond success because the order WAS saved to the DB
         res.status(200).json({ 
           message: 'Order placed but email notification failed.',
           orderId 
         });
       }
+  });
+});
+
+// 4. Forgot Password Route
+app.post('/api/forgot-password', (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ error: 'Please provide your email.' });
+
+  db.get(`SELECT * FROM users WHERE email = ?`, [email], (err, user) => {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    if (!user) return res.status(404).json({ error: 'User not found.' });
+
+    const resetToken = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiry = new Date(Date.now() + 3600000).toISOString(); // 1 hour
+
+    db.run(`UPDATE users SET reset_token = ?, reset_expiry = ? WHERE id = ?`, [resetToken, expiry, user.id], (err) => {
+      if (err) return res.status(500).json({ error: 'Failed to process forgot password.' });
+
+      console.log(`[Email Simulation] Sending Forgot Password OTP ${resetToken} to ${email}`);
+      res.json({ message: 'Reset code sent to your email.' });
+    });
+  });
+});
+
+// 5. Reset Password Route
+app.post('/api/reset-password', async (req, res) => {
+  const { email, token, newPassword } = req.body;
+  if (!email || !token || !newPassword) return res.status(400).json({ error: 'All fields are required.' });
+
+  db.get(`SELECT * FROM users WHERE email = ? AND reset_token = ?`, [email, token], async (err, user) => {
+    if (err) return res.status(500).json({ error: 'Database error' });
+    if (!user) return res.status(400).json({ error: 'Invalid reset code.' });
+
+    if (new Date() > new Date(user.reset_expiry)) {
+      return res.status(400).json({ error: 'Reset code has expired.' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    db.run(`UPDATE users SET password = ?, reset_token = NULL, reset_expiry = NULL WHERE id = ?`, [hashedPassword, user.id], (err) => {
+      if (err) return res.status(500).json({ error: 'Failed to reset password.' });
+      res.json({ message: 'Password reset successfully! You can now log in.' });
+    });
   });
 });
 
