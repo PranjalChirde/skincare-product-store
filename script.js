@@ -445,14 +445,12 @@ function checkAuth() {
       signupBtn.remove();
       
       const userBadge = document.createElement('div');
-      userBadge.style.display = 'flex';
-      userBadge.style.alignItems = 'center';
-      userBadge.style.gap = '12px';
+      userBadge.className = 'nav-user-badge';
       userBadge.innerHTML = `
-        <span style="font-family: var(--font-head); font-size: 0.85rem; font-weight: 600; color: var(--teal-dark);">
+        <span class="user-name-text">
           Hi, ${user.name.split(' ')[0]}
         </span>
-        <button onclick="handleLogout()" class="btn btn-outline btn-sm" style="padding: 6px 14px; font-size: 0.75rem;">Logout</button>
+        <button onclick="handleLogout()" class="btn btn-outline btn-sm logout-btn">Logout</button>
       `;
       
       // Insert before hamburger if it exists
