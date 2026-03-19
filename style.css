@@ -1012,3 +1012,116 @@ p  { color: var(--text-mid); font-size: 1rem; }
   .hiw-grid { grid-template-columns: 1fr; }
   .hero-stats { gap: 16px; }
 }
+
+/* ── Auth Pages ── */
+
+.auth-section {
+  min-height: calc(100vh - 80px); /* rough navbar height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--white) 0%, var(--mint-light) 100%);
+  padding: 60px 24px;
+}
+
+.auth-container {
+  background: var(--white);
+  max-width: 480px;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  padding: 48px 40px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.auth-title {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  color: var(--teal-dark);
+}
+
+.auth-sub {
+  color: var(--text-mid);
+  margin-bottom: 32px;
+  font-size: 0.95rem;
+}
+
+.auth-form {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-family: var(--font-head);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  transition: var(--transition);
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--teal-glow);
+}
+
+.auth-btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 12px;
+  padding: 16px;
+  font-size: 1rem;
+}
+
+.auth-error {
+  background: #ffe8e8;
+  color: #e74c3c;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid #ffcccc;
+}
+
+.auth-success {
+  background: #eafaf1;
+  color: #27ae60;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid #c8e6c9;
+}
+
+.auth-footer {
+  margin-top: 32px;
+  font-size: 0.9rem;
+  color: var(--text-mid);
+}
+
+.auth-footer a {
+  color: var(--teal);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.auth-footer a:hover {
+  color: var(--teal-dark);
+}

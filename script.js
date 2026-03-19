@@ -191,3 +191,135 @@ function closePopup() {
   const popup = document.getElementById('email-popup');
   if (popup) popup.style.display = 'none';
 }
+
+/* ── AUTHENTICATION ── */
+const API_URL = 'http://localhost:3000/api';
+
+async function handleSignup(e) {
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const errorDiv = document.getElementById('signup-error');
+  const successDiv = document.getElementById('signup-success');
+  const btn = e.target.querySelector('button');
+
+  errorDiv.style.display = 'none';
+  successDiv.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Signing up...';
+
+  try {
+    const res = await fetch(`${API_URL}/signup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || 'Failed to sign up');
+    }
+
+    // Save token
+    localStorage.setItem('clearo_token', data.token);
+    localStorage.setItem('clearo_user', JSON.stringify(data.user));
+    
+    successDiv.style.display = 'block';
+    successDiv.textContent = 'Account created successfully! Redirecting...';
+    
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1500);
+
+  } catch (error) {
+    errorDiv.style.display = 'block';
+    errorDiv.textContent = error.message;
+    btn.disabled = false;
+    btn.textContent = 'Sign Up';
+  }
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const errorDiv = document.getElementById('login-error');
+  const btn = e.target.querySelector('button');
+
+  errorDiv.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Logging in...';
+
+  try {
+    const res = await fetch(`${API_URL}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || 'Failed to login');
+    }
+
+    // Save token
+    localStorage.setItem('clearo_token', data.token);
+    localStorage.setItem('clearo_user', JSON.stringify(data.user));
+    
+    window.location.href = 'index.html';
+
+  } catch (error) {
+    errorDiv.style.display = 'block';
+    errorDiv.textContent = error.message;
+    btn.disabled = false;
+    btn.textContent = 'Log In';
+  }
+}
+
+function handleLogout() {
+  localStorage.removeItem('clearo_token');
+  localStorage.removeItem('clearo_user');
+  window.location.href = 'index.html';
+}
+
+function checkAuth() {
+  const token = localStorage.getItem('clearo_token');
+  const userStr = localStorage.getItem('clearo_user');
+  
+  if (token && userStr) {
+    const user = JSON.parse(userStr);
+    const loginBtn = document.getElementById('nav-login-btn');
+    const signupBtn = document.getElementById('nav-signup-btn');
+    
+    if (loginBtn && signupBtn) {
+      // Create user profile dropdown or just text
+      const navActions = loginBtn.parentElement;
+      
+      loginBtn.remove();
+      signupBtn.remove();
+      
+      const userBadge = document.createElement('div');
+      userBadge.style.display = 'flex';
+      userBadge.style.alignItems = 'center';
+      userBadge.style.gap = '12px';
+      userBadge.innerHTML = `
+        <span style="font-family: var(--font-head); font-size: 0.85rem; font-weight: 600; color: var(--teal-dark);">
+          Hi, ${user.name.split(' ')[0]}
+        </span>
+        <button onclick="handleLogout()" class="btn btn-outline btn-sm" style="padding: 6px 14px; font-size: 0.75rem;">Logout</button>
+      `;
+      
+      // Insert before hamburger if it exists
+      const hamburger = document.getElementById('hamburger-btn');
+      if (hamburger) {
+        navActions.insertBefore(userBadge, hamburger);
+      } else {
+        navActions.appendChild(userBadge);
+      }
+    }
+  }
+}
+
+// Run auth check on load
+document.addEventListener('DOMContentLoaded', checkAuth);
