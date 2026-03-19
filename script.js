@@ -171,6 +171,104 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     counterObs.observe(counter);
   });
+
+  /* ── SEARCH FUNCTIONALITY ── */
+  const searchBtn = document.getElementById('search-btn');
+  const searchOverlay = document.getElementById('search-overlay');
+  const closeSearch = document.getElementById('close-search');
+  const searchInput = document.getElementById('search-input');
+  const productsGrid = document.getElementById('products-grid');
+
+  if (searchBtn && searchOverlay && closeSearch) {
+    searchBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      searchOverlay.style.display = 'flex';
+      searchInput.focus();
+    });
+
+    closeSearch.addEventListener('click', () => {
+      searchOverlay.style.display = 'none';
+      if (productsGrid) {
+        // Reset products visibility when closing
+        const products = productsGrid.querySelectorAll('.product-card');
+        products.forEach(p => p.classList.remove('hidden'));
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') searchOverlay.style.display = 'none';
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        const info = document.getElementById('search-results-info');
+        
+        if (!productsGrid) {
+          // If NOT on index.html, we can't filter live. 
+          // We could redirect on 'Enter' or just show a message.
+          // For now, let's allow 'Enter' to redirect to index.html?search=...
+          if (info) info.textContent = 'Press Enter to search all products...';
+          return;
+        }
+        
+        const products = productsGrid.querySelectorAll('.product-card');
+        let count = 0;
+
+        products.forEach(product => {
+          const name = product.querySelector('.product-name').textContent.toLowerCase();
+          const descSpan = product.querySelector('.product-desc');
+          const desc = descSpan ? descSpan.textContent.toLowerCase() : "";
+          
+          if (name.includes(query) || desc.includes(query)) {
+            product.classList.remove('hidden');
+            count++;
+          } else {
+            product.classList.add('hidden');
+          }
+        });
+
+        if (info) {
+          if (query === '') {
+            info.textContent = '';
+          } else {
+            info.textContent = `Found ${count} ${count === 1 ? 'product' : 'products'} for "${query}"`;
+            // Scroll to products grid if we found results and are on index
+            if (count > 0 && productsGrid) {
+              productsGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }
+        }
+      });
+
+      // Handle Enter key for cross-page search or to jump to results
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const query = searchInput.value.trim();
+          if (query) {
+            if (!productsGrid) {
+              window.location.href = `index.html?search=${encodeURIComponent(query)}#products`;
+            } else {
+              searchOverlay.style.display = 'none';
+              productsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        }
+      });
+    }
+
+    // Check for search query in URL on load (for index.html)
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('search');
+    if (searchQuery && productsGrid) {
+      setTimeout(() => {
+        searchOverlay.style.display = 'flex';
+        searchInput.value = searchQuery;
+        searchInput.dispatchEvent(new Event('input'));
+      }, 500);
+    }
+  }
 });
 
 /* ── NEWSLETTER SUBMIT ── */
