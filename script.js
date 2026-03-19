@@ -221,6 +221,15 @@ async function handleSignup(e) {
       throw new Error(data.error || 'Failed to sign up');
     }
 
+    if (data.requiresVerification) {
+      successDiv.style.display = 'block';
+      successDiv.textContent = data.message;
+      setTimeout(() => {
+        window.location.href = `verify.html?email=${encodeURIComponent(email)}`;
+      }, 2000);
+      return;
+    }
+
     // Save token
     localStorage.setItem('clearo_token', data.token);
     localStorage.setItem('clearo_user', JSON.stringify(data.user));
@@ -274,6 +283,44 @@ async function handleLogin(e) {
     errorDiv.textContent = error.message;
     btn.disabled = false;
     btn.textContent = 'Log In';
+
+    if (error.message.includes('verify your email')) {
+      const email = document.getElementById('email').value;
+      setTimeout(() => {
+        window.location.href = `verify.html?email=${encodeURIComponent(email)}`;
+      }, 2500);
+    }
+  }
+}
+
+async function handleForgotPassword(e) {
+  e.preventDefault();
+  const email = document.getElementById('forgot-email').value;
+  const btn = e.target.querySelector('button');
+  const errorDiv = document.getElementById('forgot-error');
+  const successDiv = document.getElementById('forgot-success');
+
+  errorDiv.style.display = 'none';
+  successDiv.style.display = 'none';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(`${API_URL}/forgot-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || 'Failed to send reset code');
+
+    successDiv.style.display = 'block';
+    successDiv.textContent = data.message;
+    setTimeout(() => window.location.href = 'reset-password.html', 3000);
+  } catch (err) {
+    errorDiv.style.display = 'block';
+    errorDiv.textContent = err.message;
+    btn.disabled = false;
   }
 }
 
