@@ -310,6 +310,11 @@ app.get('*', (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`ClearoSkin server running at http://localhost:${PORT}`);
-});
+// Run server if started directly, otherwise export for serverless
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`ClearoSkin server running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
