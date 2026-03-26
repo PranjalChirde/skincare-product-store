@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign Up – ClearoSkin</title>
+  <link rel="icon" type="image/png" href="../images/favicon.png" />
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
@@ -16,7 +17,7 @@
       <li><a href="/">Home</a></li>
       <li><a href="/#collections">Collections</a></li>
       <li><a href="/#products">Shop</a></li>
-      <li><a href="index.html#about">Our Story</a></li>
+      <li><a href="/#about">Our Story</a></li>
     </ul>
     <div class="nav-actions">
       <a href="#" class="nav-icon-btn" title="Search" id="search-btn">🔍</a>
@@ -60,15 +61,16 @@
     <form id="signup-form" class="auth-form" onsubmit="handleSignup(event)">
       <div class="form-group">
         <label for="name">Full Name</label>
-        <input type="text" id="name" name="name" placeholder="Enter your full name" required />
+        <input type="text" id="name" name="name" placeholder="Enter your full name" required autocomplete="name" />
       </div>
       <div class="form-group">
         <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" required />
+        <input type="email" id="email" name="email" placeholder="Enter your email" required autocomplete="email" />
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Create a password" required minlength="6" />
+        <input type="password" id="password" name="password" placeholder="Create a password" required minlength="6" autocomplete="new-password" />
+
       </div>
       
       <button type="submit" class="btn btn-primary auth-btn">Sign Up</button>
