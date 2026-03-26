@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Cart – ClearoSkin</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .cart-page { padding: 60px 0; background: var(--white); min-height: 60vh; }
+    .cart-layout { display: grid; grid-template-columns: 1fr 380px; gap: 48px; align-items: start; }
+    .cart-section-title { font-family: var(--font-head); font-size: 1rem; font-weight: 700; color: var(--text-dark); padding-bottom: 16px; border-bottom: 2px solid var(--border); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+    .cart-item { display: grid; grid-template-columns: 100px 1fr auto; gap: 20px; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border); }
+    .cart-item-img { width: 100px; height: 100px; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border); background: var(--mint-light); flex-shrink: 0; }
+    .cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
+    .cart-item-name { font-family: var(--font-head); font-size: 0.95rem; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+    .cart-item-meta { font-size: 0.8rem; color: var(--text-light); margin-bottom: 10px; }
+    .cart-item-price { font-family: var(--font-head); font-size: 1rem; font-weight: 800; color: var(--teal-dark); }
+    .cart-qty-control { display: flex; align-items: center; border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; width: fit-content; }
+    .cart-qty-btn { width: 44px; height: 44px; font-size: 1.2rem; cursor: pointer; background: none; border: none; color: var(--text-dark); transition: var(--transition); display: flex; align-items: center; justify-content: center; }
+    .cart-qty-btn:hover { background: var(--mint-light); color: var(--teal); }
+    .cart-qty-val { width: 44px; text-align: center; font-family: var(--font-head); font-size: 0.95rem; font-weight: 700; border-left: 1px solid var(--border); border-right: 1px solid var(--border); height: 44px; line-height: 44px; }
+    .cart-remove-btn { font-size: 0.78rem; color: #e74c3c; cursor: pointer; background: none; border: none; font-family: var(--font-head); font-weight: 600; margin-top: 8px; transition: opacity var(--transition); }
+    .cart-remove-btn:hover { opacity: 0.65; }
+    .cart-item-total { font-family: var(--font-head); font-size: 1rem; font-weight: 800; color: var(--text-dark); text-align: right; }
+    /* Order Summary */
+    .order-summary { background: var(--mint-light); border-radius: var(--radius-lg); padding: 32px; border: 1px solid var(--border); position: sticky; top: 110px; }
+    .order-summary h3 { font-size: 1.1rem; margin-bottom: 24px; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 0.88rem; color: var(--text-mid); margin-bottom: 12px; }
+    .summary-row strong { font-family: var(--font-head); font-weight: 700; color: var(--text-dark); }
+    .summary-divider { height: 1px; background: var(--border); margin: 16px 0; }
+    .summary-total { display: flex; justify-content: space-between; align-items: center; }
+    .summary-total span { font-family: var(--font-head); font-size: 1rem; font-weight: 700; }
+    .summary-total strong { font-family: var(--font-head); font-size: 1.5rem; font-weight: 800; color: var(--teal-dark); }
+    .checkout-btn { width: 100%; margin-top: 20px; padding: 18px; font-size: 1rem; justify-content: center; border-radius: var(--radius-md); }
+    .coupon-row { display: flex; gap: 8px; margin: 16px 0; }
+    .coupon-input { flex: 1; padding: 10px 16px; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: var(--font-body); outline: none; font-size: 0.88rem; }
+    .coupon-input:focus { border-color: var(--teal); }
+    .coupon-btn { padding: 10px 18px; background: var(--teal-glow); color: var(--teal-dark); font-family: var(--font-head); font-weight: 700; font-size: 0.82rem; border-radius: var(--radius-md); cursor: pointer; border: 1px solid var(--mint-mid); transition: var(--transition); }
+    .coupon-btn:hover { background: var(--teal); color: white; }
+    .cart-trust { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+    .cart-trust-item { display: flex; align-items: center; gap: 10px; font-size: 0.82rem; color: var(--text-mid); font-family: var(--font-head); font-weight: 500; }
+    .empty-cart { text-align: center; padding: 80px 24px; }
+    .empty-cart .empty-icon { font-size: 4rem; margin-bottom: 20px; }
+
+    /* Upsell */
+    .cart-upsell { margin-top: 40px; }
+    .upsell-title { font-family: var(--font-head); font-size: 1rem; font-weight: 700; margin-bottom: 16px; color: var(--text-dark); }
+    .upsell-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .upsell-card { background: var(--mint-light); border-radius: var(--radius-md); padding: 16px; display: flex; align-items: center; gap: 14px; border: 1px solid var(--border); transition: var(--transition); cursor: pointer; }
+    .upsell-card:hover { box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+    .upsell-card img { width: 64px; height: 64px; border-radius: var(--radius-sm); object-fit: cover; flex-shrink: 0; }
+    .upsell-info .upsell-name { font-family: var(--font-head); font-size: 0.82rem; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+    .upsell-info .upsell-price { font-size: 0.88rem; color: var(--teal-dark); font-weight: 800; font-family: var(--font-head); }
+    .upsell-add { margin-left: auto; background: var(--teal); color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: var(--transition); flex-shrink: 0; }
+    .upsell-card:hover .upsell-add { background: var(--teal-dark); transform: rotate(90deg); }
+
+    /* Forms */
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group.full { grid-column: span 2; }
+    .form-label { display: block; font-family: var(--font-head); font-size: 0.85rem; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+    .form-control { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius-md); font-family: var(--font-body); font-size: 0.9rem; outline: none; transition: var(--transition); }
+    .form-control:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-glow); }
+
+    /* Payment options */
+    .payment-options { display: flex; flex-direction: column; gap: 16px; }
+    .payment-item { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; cursor: pointer; transition: var(--transition); position: relative; }
+    .payment-item.active { border-color: var(--teal); background: var(--teal-glow); }
+    .payment-item input[type="radio"] { position: absolute; top: 22px; right: 20px; accent-color: var(--teal); }
+    .payment-item-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .payment-item-head span { font-family: var(--font-head); font-weight: 700; font-size: 0.95rem; }
+    .payment-item-body { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .payment-item.active .payment-item-body { display: block; }
+
+    /* Progress bar sync */
+    .step-indicator { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-head); font-weight: 700; font-size: 0.85rem; margin: 0 auto 6px; transition: var(--transition); }
+    .step-indicator.active { background: var(--teal); color: white; }
+    .step-indicator.pending { background: var(--border); color: var(--text-light); }
+    .step-indicator.completed { background: var(--teal-glow); color: var(--teal); border: 2px solid var(--teal); }
+    .step-line { flex: 1; height: 2px; background: var(--border); margin-bottom: 20px; transition: var(--transition); margin-top: 15px; }
+    .step-line.active { background: var(--teal); }
+    .step-label { font-family: var(--font-head); font-size: 0.72rem; font-weight: 600; color: var(--text-light); transition: var(--transition); display: block; margin-top: 4px; white-space: nowrap; }
+    .step-label.active { color: var(--teal); font-weight: 700; }
+
+    @media (max-width: 900px) { .cart-layout { grid-template-columns: 1fr; } .order-summary { position: static; } }
+    @media (max-width: 600px) { .cart-item { grid-template-columns: 80px 1fr; gap: 14px; } .cart-item-total { display: none; } .upsell-grid { grid-template-columns: 1fr; } .form-grid { grid-template-columns: 1fr; } .form-group.full { grid-column: span 1; } }
+  </style>
+</head>
+<body>
+
+<div id="announcement-bar">🎉 <span>FREE SHIPPING</span> on orders above ₹499 &nbsp;|&nbsp; Use code <span>CLEAR20</span> for 20% off!</div>
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Clearo<span>Skin</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/#products">Shop</a></li>
+      <li><a href="/public/pages/skin-analyzer.html" style="color:var(--teal);font-weight:700;">✨ AI Skin Analyzer</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#" class="nav-icon-btn" title="Search" id="search-btn">🔍</a>
+      <a href="/public/pages/cart.html" class="nav-icon-btn" title="Cart">🛒<span class="cart-count" id="cart-count">0</span></a>
+      <a href="/public/pages/login.html" class="btn btn-outline btn-sm" id="nav-login-btn">Login</a>
+      <a href="/public/pages/signup.html" class="btn btn-primary btn-sm" id="nav-signup-btn">Sign Up</a>
+      <div class="hamburger" id="hamburger-btn"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<!-- Progress bar -->
+<div style="background:var(--mint-light);border-bottom:1px solid var(--border);padding:16px 0;">
+  <div class="container">
+    <div style="display:flex;align-items:flex-start;gap:0;max-width:440px;margin:0 auto;position:relative;">
+      <div style="flex:1;text-align:center;position:relative;z-index:1;">
+        <div class="step-indicator active" id="step-id-1">1</div>
+        <span class="step-label active" id="step-lb-1">Cart</span>
+      </div>
+      <div class="step-line" id="step-ln-1"></div>
+      <div style="flex:1;text-align:center;position:relative;z-index:1;">
+        <div class="step-indicator pending" id="step-id-2">2</div>
+        <span class="step-label" id="step-lb-2">Info</span>
+      </div>
+      <div class="step-line" id="step-ln-2"></div>
+      <div style="flex:1;text-align:center;position:relative;z-index:1;">
+        <div class="step-indicator pending" id="step-id-3">3</div>
+        <span class="step-label" id="step-lb-3">Payment</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="cart-page">
+  <div class="container">
+    <div style="margin-bottom:32px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <h1 id="page-title" style="font-size:1.8rem;">Your Cart</h1>
+      <span id="cart-item-summary" style="font-size:0.85rem;color:var(--text-light);font-family:var(--font-head);">0 items</span>
+    </div>
+
+    <div class="cart-layout">
+      <!-- Left: Step Content -->
+      <div id="steps-container">
+        
+        <!-- Step 1: Cart View -->
+        <div id="step-1" class="step-content">
+          <!-- FREE shipping bar -->
+          <div id="free-ship-bar" style="background:var(--teal-glow);border-radius:var(--radius-md);padding:14px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;">
+            <span style="font-size:1.3rem;">🚚</span>
+            <div style="flex:1;">
+              <div style="font-family:var(--font-head);font-size:0.85rem;font-weight:700;color:var(--teal-dark);" id="ship-bar-text">Add ₹499+ to get FREE shipping!</div>
+              <div style="height:6px;background:var(--mint-mid);border-radius:3px;margin-top:6px;"><div id="ship-bar-progress" style="height:100%;background:var(--teal);border-radius:3px;width:0%;transition:width 0.5s ease;"></div></div>
+            </div>
+          </div>
+
+          <div class="cart-section-title">
+            <span>Products</span>
+            <a href="/#products" style="font-size:0.82rem;color:var(--teal);font-family:var(--font-head);font-weight:600;">+ Add More Items</a>
+          </div>
+
+          <div id="cart-items-container">
+            <!-- Populated by JS -->
+          </div>
+
+          <div id="empty-cart-msg" class="empty-cart" style="display:none;">
+            <div class="empty-icon">🛒</div>
+            <h2 style="margin-bottom:12px;">Your cart is empty</h2>
+            <p style="margin-bottom:28px;">Looks like you haven't added anything yet. Browse our skincare collection to get started!</p>
+            <a href="/#products" class="btn btn-primary">Browse Products</a>
+          </div>
+
+          <!-- Upsell -->
+          <div class="cart-upsell" id="cart-upsell">
+            <div class="upsell-title">💡 You Might Also Like</div>
+            <div class="upsell-grid">
+              <div class="upsell-card" onclick="addToCart(3,'Oil-Free Moisturizer',499,null);renderCart();">
+                <img src="../images/product_moisturizer.png" alt="Moisturizer" />
+                <div class="upsell-info">
+                  <div class="upsell-name">Oil-Free Moisturizer</div>
+                  <div class="upsell-price">₹499 <span style="font-size:0.75rem;color:var(--text-light);font-weight:400;text-decoration:line-through;">₹799</span></div>
+                </div>
+                <div class="upsell-add">+</div>
+              </div>
+              <div class="upsell-card" onclick="addToCart(4,'Spot Removal Cream',599,null);renderCart();">
+                <img src="../images/product_spot_cream.png" alt="Spot Cream" />
+                <div class="upsell-info">
+                  <div class="upsell-name">Spot Removal Cream</div>
+                  <div class="upsell-price">₹599 <span style="font-size:0.75rem;color:var(--text-light);font-weight:400;text-decoration:line-through;">₹899</span></div>
+                </div>
+                <div class="upsell-add">+</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Shipping Info -->
+        <div id="step-2" class="step-content" style="display:none;">
+          <div class="cart-section-title">
+            <span>Shipping Information</span>
+            <button onclick="goToStep(1)" style="font-size:0.82rem;color:var(--text-mid);background:none;border:none;cursor:pointer;font-family:var(--font-head);font-weight:600;">← Back to Cart</button>
+          </div>
+          <form id="shipping-form" onsubmit="event.preventDefault(); goToStep(3);">
+            <div class="form-grid">
+              <div class="form-group full">
+                <label class="form-label">Full Name</label>
+                <input type="text" id="ship-name" class="form-control" placeholder="Pranjal Chirde" required />
+              </div>
+              <div class="form-group full">
+                <label class="form-label">Address</label>
+                <input type="text" id="ship-address" class="form-control" placeholder="House No, Street, Landmark" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">City</label>
+                <input type="text" id="ship-city" class="form-control" placeholder="Mumbai" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Pincode</label>
+                <input type="text" id="ship-pincode" class="form-control" placeholder="400001" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input type="tel" id="ship-phone" class="form-control" placeholder="+91 98765 43210" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" id="ship-email" class="form-control" placeholder="pranjal@example.com" required />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;margin-top:20px;justify-content:center;">Continue to Payment →</button>
+          </form>
+        </div>
+
+        <!-- Step 3: Payment -->
+        <div id="step-3" class="step-content" style="display:none;">
+          <div class="cart-section-title">
+            <span>Payment Method</span>
+            <button onclick="goToStep(2)" style="font-size:0.82rem;color:var(--text-mid);background:none;border:none;cursor:pointer;font-family:var(--font-head);font-weight:600;">← Back to Shipping</button>
+          </div>
+          <div class="payment-options">
+            <div class="payment-item active" onclick="selectPayment(this)">
+              <div class="payment-item-head">
+                <span style="font-size:1.4rem;">💳</span>
+                <span>Credit / Debit Card</span>
+                <input type="radio" name="pay" checked />
+              </div>
+              <div class="payment-item-body">
+                <div class="form-group full">
+                  <label class="form-label">Card Number</label>
+                  <input type="text" class="form-control" placeholder="XXXX XXXX XXXX XXXX" />
+                </div>
+                <div class="form-grid">
+                  <div class="form-group"><label class="form-label">Expiry</label><input type="text" class="form-control" placeholder="MM / YY" /></div>
+                  <div class="form-group"><label class="form-label">CVV</label><input type="password" class="form-control" placeholder="XXX" /></div>
+                </div>
+              </div>
+            </div>
+            <div class="payment-item" onclick="selectPayment(this)">
+              <div class="payment-item-head">
+                <span style="font-size:1.4rem;">📱</span>
+                <span>UPI (GPay / PhonePe / Paytm)</span>
+                <input type="radio" name="pay" />
+              </div>
+              <div class="payment-item-body">
+                <div class="form-group full">
+                  <label class="form-label">Enter UPI ID</label>
+                  <input type="text" class="form-control" placeholder="user@upi" />
+                </div>
+              </div>
+            </div>
+            <div class="payment-item" onclick="selectPayment(this)">
+              <div class="payment-item-head">
+                <span style="font-size:1.4rem;">💵</span>
+                <span>Cash on Delivery</span>
+                <input type="radio" name="pay" />
+              </div>
+            </div>
+          </div>
+          <button onclick="handleFinalOrder()" class="btn btn-primary" style="width:100%;margin-top:32px;justify-content:center;padding:18px;">Place Order & Pay Now</button>
+        </div>
+
+      </div>
+
+      <!-- Right: Summary -->
+      <div class="order-summary" id="summary-panel">
+        <h3 id="summary-title">Order Summary</h3>
+        <div class="summary-row"><span>Subtotal</span><strong id="summary-subtotal">₹0</strong></div>
+        <div class="summary-row"><span>Shipping</span><strong id="summary-shipping">₹49</strong></div>
+        <div class="summary-row" id="discount-row" style="display:none;"><span>Discount (CLEAR20)</span><strong id="summary-discount" style="color:#27ae60;">-₹0</strong></div>
+
+        <!-- Coupon -->
+        <div class="coupon-row" id="coupon-row">
+          <input type="text" class="coupon-input" id="coupon-input" placeholder="Enter coupon code" />
+          <button class="coupon-btn" onclick="applyCoupon()">Apply</button>
+        </div>
+        <div id="coupon-msg" style="font-size:0.78rem;color:var(--teal-dark);margin-bottom:8px;display:none;"></div>
+
+        <div class="summary-divider"></div>
+        <div class="summary-total">
+          <span>Total</span>
+          <strong id="summary-total">₹0</strong>
+        </div>
+        <p style="font-size:0.75rem;color:var(--text-light);margin-top:4px;">Including GST</p>
+
+        <button class="btn btn-primary checkout-btn" id="main-cta" onclick="handleCheckout()">
+          🔒 &nbsp; Proceed to Checkout →
+        </button>
+
+        <div class="cart-trust">
+          <div class="cart-trust-item">🔒 256-bit SSL Secured Checkout</div>
+          <div class="cart-trust-item">📦 Fast Pan-India Delivery (3–5 days)</div>
+        </div>
+
+        <div style="margin-top:24px;text-align:center;display:flex;justify-content:center;gap:8px;">
+          <span style="background:rgba(0,0,0,0.06);border-radius:6px;padding:4px 10px;font-size:0.72rem;font-weight:700;font-family:var(--font-head);">UPI</span>
+          <span style="background:rgba(0,0,0,0.06);border-radius:6px;padding:4px 10px;font-size:0.72rem;font-weight:700;font-family:var(--font-head);">Visa</span>
+          <span style="background:rgba(0,0,0,0.06);border-radius:6px;padding:4px 10px;font-size:0.72rem;font-weight:700;font-family:var(--font-head);">MC</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Checkout confirmation modal -->
+<div id="checkout-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:10000;align-items:center;justify-content:center;">
+  <div style="background:white;border-radius:24px;padding:48px 40px;max-width:440px;width:90%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,0.2);">
+    <div style="font-size:4rem;margin-bottom:16px;">🎉</div>
+    <h2 style="margin-bottom:8px;">Order Placed Successfully!</h2>
+    <p style="color:var(--text-mid);margin-bottom:8px;">Thank you for choosing ClearoSkin.</p>
+    <p style="color:var(--text-mid);font-size:0.9rem;margin-bottom:24px;">Your order will be delivered in 3–5 business days. A confirmation has been sent to your email.</p>
+    <div style="background:var(--mint-light);border-radius:var(--radius-md);padding:16px;margin-bottom:24px;">
+      <div style="font-family:var(--font-head);font-size:0.82rem;color:var(--text-mid);">Order ID</div>
+      <div style="font-family:var(--font-head);font-size:1.1rem;font-weight:800;color:var(--text-dark);" id="order-id">#CS-2026-XXXXX</div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="closeModal()">Continue Shopping</button>
+  </div>
+</div>
+
+<footer style="background:var(--text-dark);padding:32px 24px;text-align:center;margin-top:60px;">
+  <a href="/" class="nav-logo" style="color:white;font-size:1.4rem;display:inline-block;margin-bottom:12px;">Clearo<span>Skin</span></a>
+  <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;">© 2026 ClearoSkin. All rights reserved.</p>
+</footer>
+
+<div id="toast"><span class="toast-icon">✅</span><span id="toast-msg">Added to cart!</span></div>
+
+<!-- ════════════════════════════════════════
+     SEARCH OVERLAY
+     ════════════════════════════════════════ -->
+<div id="search-overlay" class="search-overlay">
+  <div class="search-container">
+    <div class="search-header">
+      <div class="nav-logo">Clearo<span>Skin</span></div>
+      <button class="close-search" id="close-search">✕</button>
+    </div>
+    <div class="search-body">
+      <h2 class="search-title">What are you looking for?</h2>
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Search for acne wash, serum, skin type..." autofocus />
+      </div>
+      <div id="search-results-info" class="search-results-info"></div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/script.js"></script>
+<script>
+  const productImgs = {
+    1: '../images/product_face_wash.png',
+    2: '../images/product_serum.png',
+    3: '../images/product_moisturizer.png',
+    4: '../images/product_spot_cream.png',
+    5: '../images/product_toner.png',
+    6: '../images/product_sunscreen.png',
+    7: '../images/product_night_cream.png',
+    8: '../images/product_scrub.png',
+    9: '../images/product_vitamin_c.png',
+    10: '../images/product_eye_cream.png',
+    11: '',
+    12: '',
+    13: '',
+    14: '',
+    15: '',
+    16: '',
+    17: '',
+    18: '',
+    19: '',
+    20: ''
+  };
+
+  let currentStep = 1;
+
+  function goToStep(n) {
+    // Hide all steps
+    document.querySelectorAll('.step-content').forEach(s => s.style.display = 'none');
+    // Show target step
+    document.getElementById('step-' + n).style.display = 'block';
+    
+    // Update progress bar
+    for(let i=1; i<=3; i++) {
+        const id = document.getElementById('step-id-' + i);
+        const lb = document.getElementById('step-lb-' + i);
+        const ln = document.getElementById('step-ln-' + i);
+        
+        if (i < n) {
+            id.className = 'step-indicator completed';
+            id.textContent = '✓';
+            lb.className = 'step-label active';
+            if (ln) ln.className = 'step-line active';
+        } else if (i === n) {
+            id.className = 'step-indicator active';
+            id.textContent = i;
+            lb.className = 'step-label active';
+            if (ln) ln.className = 'step-line';
+        } else {
+            id.className = 'step-indicator pending';
+            id.textContent = i;
+            lb.className = 'step-label';
+            if (ln) ln.className = 'step-line';
+        }
+    }
+
+    // Update Page Header
+    const titles = ["Your Cart", "Information", "Payment"];
+    document.getElementById('page-title').textContent = titles[n-1];
+    
+    // Summary adjustments
+    const cta = document.getElementById('main-cta');
+    const couponRow = document.getElementById('coupon-row');
+    if (n > 1) {
+        cta.style.display = 'none';
+        couponRow.style.display = 'none';
+    } else {
+        cta.style.display = 'flex';
+        couponRow.style.display = 'flex';
+    }
+
+    currentStep = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderCart() {
+    const cart = JSON.parse(localStorage.getItem('clearo_cart') || '[]');
+    const container = document.getElementById('cart-items-container');
+    const emptyMsg = document.getElementById('empty-cart-msg');
+    const upsell = document.getElementById('cart-upsell');
+    const sumEl = document.getElementById('cart-item-summary');
+
+    if (cart.length === 0) {
+      container.innerHTML = '';
+      emptyMsg.style.display = 'block';
+      upsell.style.display = 'none';
+    } else {
+      emptyMsg.style.display = 'none';
+      upsell.style.display = 'block';
+      let total = 0;
+      let html = '';
+      cart.forEach((item, i) => {
+        total += item.price * item.qty;
+        html += `
+        <div class="cart-item" id="cart-item-${i}">
+          <div class="cart-item-img"><img src="${productImgs[item.id] || ''}" alt="${item.name}" /></div>
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-meta">Dermatologically Tested · 30ml</div>
+            <div class="cart-item-price">₹${item.price}</div>
+            <div style="display:flex;align-items:center;gap:16px;margin-top:8px;">
+              <div class="cart-qty-control">
+                <button class="cart-qty-btn" onclick="updateQty(${i}, -1)">−</button>
+                <div class="cart-qty-val">${item.qty}</div>
+                <button class="cart-qty-btn" onclick="updateQty(${i}, 1)">+</button>
+              </div>
+              <button class="cart-remove-btn" onclick="removeItem(${i})">🗑 Remove</button>
+            </div>
+          </div>
+          <div class="cart-item-total">₹${(item.price * item.qty).toLocaleString('en-IN')}</div>
+        </div>`;
+      });
+      container.innerHTML = html;
+      sumEl.textContent = cart.reduce((a, b) => a + b.qty, 0) + ' items';
+      updateSummary(total);
+    }
+  }
+
+  function updateQty(idx, dir) {
+    let cart = JSON.parse(localStorage.getItem('clearo_cart') || '[]');
+    cart[idx].qty = Math.max(1, cart[idx].qty + dir);
+    localStorage.setItem('clearo_cart', JSON.stringify(cart));
+    renderCart();
+    updateCartCount();
+  }
+
+  function removeItem(idx) {
+    let cart = JSON.parse(localStorage.getItem('clearo_cart') || '[]');
+    cart.splice(idx, 1);
+    localStorage.setItem('clearo_cart', JSON.stringify(cart));
+    renderCart();
+    updateCartCount();
+    showToast('Item removed from cart', '🗑');
+  }
+
+  let discountApplied = false;
+  function applyCoupon() {
+    const code = document.getElementById('coupon-input').value.trim().toUpperCase();
+    const msg = document.getElementById('coupon-msg');
+    if (code === 'CLEAR20') {
+      discountApplied = true;
+      msg.style.display = 'block';
+      msg.style.color = 'var(--teal-dark)';
+      msg.textContent = '✅ Coupon CLEAR20 applied! You get 20% off.';
+      renderCart();
+    } else {
+      discountApplied = false;
+      msg.style.display = 'block';
+      msg.style.color = '#e74c3c';
+      msg.textContent = '❌ Invalid coupon code. Try CLEAR20.';
+    }
+  }
+
+  function updateSummary(subtotal) {
+    const shipping = subtotal >= 499 ? 0 : 49;
+    const discountRow = document.getElementById('discount-row');
+    let discount = 0;
+    if (discountApplied) {
+      discount = Math.round(subtotal * 0.20);
+      discountRow.style.display = 'flex';
+      document.getElementById('summary-discount').textContent = '-₹' + discount.toLocaleString('en-IN');
+    } else {
+      discountRow.style.display = 'none';
+    }
+    const total = subtotal - discount + shipping;
+
+    document.getElementById('summary-subtotal').textContent = '₹' + subtotal.toLocaleString('en-IN');
+    document.getElementById('summary-shipping').textContent = shipping === 0 ? '🎉 FREE' : '₹' + shipping;
+    document.getElementById('summary-total').textContent = '₹' + total.toLocaleString('en-IN');
+
+    // Shipping bar
+    const bar = document.getElementById('ship-bar-progress');
+    if (bar) {
+        const pct = Math.min((subtotal / 499) * 100, 100);
+        bar.style.width = pct + '%';
+        const txt = document.getElementById('ship-bar-text');
+        if (subtotal >= 499) {
+            txt.textContent = '🎉 You\'ve unlocked FREE shipping!';
+            txt.style.color = 'var(--teal-dark)';
+        } else {
+            const remaining = 499 - subtotal;
+            txt.textContent = `Add ₹${remaining} more for FREE shipping!`;
+        }
+    }
+  }
+
+  function handleCheckout() {
+    const cart = JSON.parse(localStorage.getItem('clearo_cart') || '[]');
+    if (cart.length === 0) { showToast('Your cart is empty!', '⚠️'); return; }
+    goToStep(2);
+  }
+
+  function selectPayment(el) {
+      document.querySelectorAll('.payment-item').forEach(item => item.classList.remove('active'));
+      el.classList.add('active');
+      el.querySelector('input').checked = true;
+  }
+
+  async function handleFinalOrder() {
+    const cart = JSON.parse(localStorage.getItem('clearo_cart') || '[]');
+    if (cart.length === 0) { showToast('Your cart is empty!', '⚠️'); return; }
+
+    // Validate shipping fields are filled
+    const name = document.getElementById('ship-name')?.value?.trim();
+    const email = document.getElementById('ship-email')?.value?.trim();
+    const phone = document.getElementById('ship-phone')?.value?.trim();
+    const address = document.getElementById('ship-address')?.value?.trim();
+    const city = document.getElementById('ship-city')?.value?.trim();
+    const pincode = document.getElementById('ship-pincode')?.value?.trim();
+
+    if (!name || !email || !phone || !address || !city || !pincode) {
+      showToast('Please fill in all shipping details first!', '⚠️');
+      goToStep(2);
+      return;
+    }
+
+    const btn = document.querySelector('[onclick="handleFinalOrder()"]');
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Placing Order...'; }
+
+    const orderId = '#CS-2026-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+    // Strip all commas and ₹ symbol before parsing
+    const totalText = document.getElementById('summary-total').textContent.replace(/[₹,]/g, '');
+    const total = parseFloat(totalText) || 0;
+
+    // Get clean payment method label from the active item's head span
+    const activePayItem = document.querySelector('.payment-item.active .payment-item-head span:last-of-type');
+    const payMethod = activePayItem ? activePayItem.textContent.trim() : 'Credit / Debit Card';
+
+    const orderData = {
+      orderId,
+      customer: { name, email, phone, address, city, pincode },
+      items: cart,
+      total,
+      paymentMethod: payMethod
+    };
+
+    try {
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        document.getElementById('order-id').textContent = orderId;
+        document.getElementById('checkout-modal').style.display = 'flex';
+        localStorage.setItem('clearo_cart', '[]');
+        updateCartCount();
+      } else {
+        showToast(result.error || 'Failed to place order. Please try again.', '❌');
+        if (btn) { btn.disabled = false; btn.textContent = 'Place Order & Pay Now'; }
+      }
+    } catch (err) {
+      console.error('Order error:', err);
+      showToast('Could not connect to server. Please check your connection.', '❌');
+      if (btn) { btn.disabled = false; btn.textContent = 'Place Order & Pay Now'; }
+    }
+  }
+
+  function closeModal() {
+    document.getElementById('checkout-modal').style.display = 'none';
+    updateCartCount();
+    renderCart();
+    window.location.href = '/';
+  }
+
+  // Initialize on load
+  renderCart();
+  updateCartCount();
+</script>
+</body>
+</html>

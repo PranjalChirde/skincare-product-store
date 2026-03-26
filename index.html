@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ClearoSkin – Clear Skin Starts Here | Acne Treatment & Skincare</title>
   <meta name="description" content="ClearoSkin offers dermatology-inspired skincare solutions for acne, oily skin, and dark spots. Shop our complete range of science-backed skincare products for clear, glowing skin." />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="public/css/style.css" />
 </head>
 <body>
 
@@ -22,24 +22,25 @@
 ════════════════════════════════════════ -->
 <nav id="navbar">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">Clearo<span>Skin</span></a>
+    <a href="/" class="nav-logo">Clearo<span>Skin</span></a>
     
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
+      <li><a href="/">Home</a></li>
       <li><a href="#collections">Collections</a></li>
       <li><a href="#products">Shop</a></li>
+      <li><a href="/public/pages/skin-analyzer.html" style="color:var(--teal);font-weight:700;">✨ AI Skin Analyzer</a></li>
       <li><a href="#about">Our Story</a></li>
       <li><a href="#testimonials">Reviews</a></li>
     </ul>
 
     <div class="nav-actions">
       <a href="#" class="nav-icon-btn" title="Search" id="search-btn">🔍</a>
-      <a href="cart.html" class="nav-icon-btn" title="Cart">
+      <a href="/public/pages/cart.html" class="nav-icon-btn" title="Cart">
         🛒
         <span class="cart-count" id="cart-count">0</span>
       </a>
-      <a href="login.html" class="btn btn-outline btn-sm" id="nav-login-btn">Login</a>
-      <a href="signup.html" class="btn btn-primary btn-sm" id="nav-signup-btn">Sign Up</a>
+      <a href="/public/pages/login.html" class="btn btn-outline btn-sm" id="nav-login-btn">Login</a>
+      <a href="/public/pages/signup.html" class="btn btn-primary btn-sm" id="nav-signup-btn">Sign Up</a>
       <div class="hamburger" id="hamburger-btn" tabindex="0" aria-label="Open Menu">
         <span></span><span></span><span></span>
       </div>
@@ -52,17 +53,18 @@
   <div class="mobile-nav-bg" id="mobile-nav-bg"></div>
   <div class="mobile-nav-panel">
     <div class="mobile-nav-header">
-      <span class="nav-logo">Clearo<span>Skin</span></a>
+      <span class="nav-logo">Clearo<span>Skin</span></span>
       <span class="close-btn" id="close-nav">✕</span>
     </div>
     <nav class="mobile-nav-links">
-      <a href="index.html">🏠 Home</a>
+      <a href="/">🏠 Home</a>
       <a href="#collections">✨ Collections</a>
       <a href="#products">🛍️ Shop All</a>
+      <a href="/public/pages/skin-analyzer.html" style="color:var(--teal);font-weight:700;">🤖 AI Skin Analyzer</a>
       <a href="#about">📖 Our Story</a>
       <a href="#testimonials">⭐ Reviews</a>
       <a href="#" onclick="document.getElementById('search-btn').click(); return false;">🔍 Search</a>
-      <a href="cart.html">🛒 Cart</a>
+      <a href="/public/pages/cart.html">🛒 Cart</a>
     </nav>
     <a href="#newsletter" class="btn btn-primary" style="margin-top:auto;">Get 20% Off →</a>
   </div>
@@ -94,8 +96,8 @@
         <a href="#products" class="btn btn-primary">
           Shop Now &nbsp;→
         </a>
-        <a href="#how-it-works" class="btn btn-outline">
-          See How It Works
+        <a href="/public/pages/skin-analyzer.html" class="btn btn-outline">
+          ✨ Try AI Skin Analyzer
         </a>
       </div>
       <div class="hero-stats">
@@ -117,7 +119,7 @@
     <!-- Right: Image -->
     <div class="hero-img-wrap reveal">
       <img 
-        src="images/hero_banner.png"
+        src="public/images/hero_banner.png"
         alt="Clear glowing skin – ClearoSkin model"
       />
       <!-- Floating cards -->
@@ -175,13 +177,13 @@
         <div class="collection-icon">💧</div>
         <h3>Oil Control</h3>
         <p>Keep excess oil in check with lightweight, non-comedogenic formulas for matte skin all day.</p>
-        <a href="#products" class="collection-link">Explore Collection →</a>
+        <a href="/public/pages/index.html#products" class="collection-link">Explore Collection →</a>
       </div>
       <div class="collection-card reveal reveal-delay-2">
         <div class="collection-icon">✨</div>
         <h3>Scar Removal</h3>
         <p>Fade dark spots and post-acne marks with our brightening & resurfacing formulas.</p>
-        <a href="#products" class="collection-link">Explore Collection →</a>
+        <a href="/public/pages/index.html#products" class="collection-link">Explore Collection →</a>
       </div>
     </div>
   </div>
@@ -204,11 +206,11 @@
       <div class="product-card reveal">
         <div class="product-img-wrap">
           <img 
-            src="images/product_face_wash.png"
+            src="public/images/product_face_wash.png"
             alt="Acne Control Face Wash – ClearoSkin"
           />
           <div class="product-overlay">
-            <button class="product-quick-btn" onclick="window.location.href='product.html?id=1'">Quick View</button>
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=1'">Quick View</button>
           </div>
           <div class="product-tag"><span class="badge">Best Seller</span></div>
           <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist">
@@ -221,7 +223,7 @@
             <span>(324 reviews)</span>
           </div>
           <div class="product-name">Acne Control Face Wash</div>
-          <div class="product-desc">Removes oil & dirt • Prevents breakouts • Gentle formula</div>
+          <div class="product-desc">Removes oil &amp; dirt • Prevents breakouts • Gentle formula</div>
           <div class="product-price">
             <span class="price-current">₹299</span>
             <span class="price-original">₹499</span>
@@ -237,11 +239,11 @@
       <div class="product-card reveal reveal-delay-1">
         <div class="product-img-wrap">
           <img 
-            src="images/product_serum.png"
+            src="public/images/product_serum.png"
             alt="Anti-Acne Serum – ClearoSkin"
           />
           <div class="product-overlay">
-            <button class="product-quick-btn" onclick="window.location.href='product.html?id=2'">Quick View</button>
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=2'">Quick View</button>
           </div>
           <div class="product-tag"><span class="badge" style="background:#00BFA6;">⚡ Most Effective</span></div>
           <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist">
@@ -254,7 +256,7 @@
             <span>(218 reviews)</span>
           </div>
           <div class="product-name">Anti-Acne Serum</div>
-          <div class="product-desc">Reduces pimples & scars • Fast-absorbing formula</div>
+          <div class="product-desc">Reduces pimples &amp; scars • Fast-absorbing formula</div>
           <div class="product-price">
             <span class="price-current">₹699</span>
             <span class="price-original">₹999</span>
@@ -270,11 +272,11 @@
       <div class="product-card reveal reveal-delay-2">
         <div class="product-img-wrap">
           <img 
-            src="images/product_moisturizer.png"
+            src="public/images/product_moisturizer.png"
             alt="Oil-Free Moisturizer – ClearoSkin"
           />
           <div class="product-overlay">
-            <button class="product-quick-btn" onclick="window.location.href='product.html?id=3'">Quick View</button>
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=3'">Quick View</button>
           </div>
           <div class="product-tag"><span class="badge" style="background:#9b59b6;">🌿 Fan Fav</span></div>
           <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist">
@@ -302,23 +304,15 @@
       <!-- Product 4: Spot Cream -->
       <div class="product-card reveal reveal-delay-3">
         <div class="product-img-wrap">
-          <img 
-            src="images/product_spot_cream.png"
-            alt="Spot Removal Cream – ClearoSkin"
-          />
+          <img src="public/images/product_spot_cream.png" alt="Spot Removal Cream – ClearoSkin" />
           <div class="product-overlay">
-            <button class="product-quick-btn" onclick="window.location.href='product.html?id=4'">Quick View</button>
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=4'">Quick View</button>
           </div>
           <div class="product-tag"><span class="badge" style="background:#e67e22;">🔥 Hot Deal</span></div>
-          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist">
-            <span class="heart-icon">🤍</span>
-          </div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
         </div>
         <div class="product-info">
-          <div class="product-stars">
-            <span class="stars">★★★★★</span>
-            <span>(94 reviews)</span>
-          </div>
+          <div class="product-stars"><span class="stars">★★★★★</span><span>(94 reviews)</span></div>
           <div class="product-name">Spot Removal Cream</div>
           <div class="product-desc">Targets dark spots • Brightens skin tone visibly</div>
           <div class="product-price">
@@ -326,32 +320,22 @@
             <span class="price-original">₹899</span>
             <span class="price-save">Save 33%</span>
           </div>
-          <button class="product-atc-btn" onclick="addToCart(4, 'Spot Removal Cream', 599, this)">
-            Add to Cart
-          </button>
+          <button class="product-atc-btn" onclick="addToCart(4, 'Spot Removal Cream', 599, this)">Add to Cart</button>
         </div>
       </div>
 
       <!-- Product 5: Clarifying Toner -->
       <div class="product-card reveal">
         <div class="product-img-wrap">
-          <img 
-            src="images/product_serum.png"
-            alt="Clarifying Toner – ClearoSkin"
-          />
+          <img src="public/images/product_toner.png" alt="Clarifying Toner – ClearoSkin" />
           <div class="product-overlay">
-            <button class="product-quick-btn" onclick="window.location.href='product.html?id=5'">Quick View</button>
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=5'">Quick View</button>
           </div>
           <div class="product-tag"><span class="badge" style="background:#3498db;">New</span></div>
-          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist">
-            <span class="heart-icon">🤍</span>
-          </div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
         </div>
         <div class="product-info">
-          <div class="product-stars">
-            <span class="stars">★★★★☆</span>
-            <span>(42 reviews)</span>
-          </div>
+          <div class="product-stars"><span class="stars">★★★★☆</span><span>(42 reviews)</span></div>
           <div class="product-name">Clarifying Toner</div>
           <div class="product-desc">Pore-refining formula • Balances skin pH</div>
           <div class="product-price">
@@ -359,32 +343,22 @@
             <span class="price-original">₹599</span>
             <span class="price-save">Save 33%</span>
           </div>
-          <button class="product-atc-btn" onclick="addToCart(5, 'Clarifying Toner', 399, this)">
-            Add to Cart
-          </button>
+          <button class="product-atc-btn" onclick="addToCart(5, 'Clarifying Toner', 399, this)">Add to Cart</button>
         </div>
       </div>
 
       <!-- Product 6: Sunscreen SPF 50 -->
       <div class="product-card reveal">
         <div class="product-img-wrap">
-          <img 
-            src="images/product_moisturizer.png"
-            alt="Sunscreen SPF 50 – ClearoSkin"
-          />
+          <img src="public/images/product_sunscreen.png" alt="Sunscreen SPF 50 – ClearoSkin" />
           <div class="product-overlay">
-            <button class="product-quick-btn" onclick="window.location.href='product.html?id=6'">Quick View</button>
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=6'">Quick View</button>
           </div>
-          <div class="product-tag"><span class="badge" style="background:#f1c40f;">Protective</span></div>
-          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist">
-            <span class="heart-icon">🤍</span>
-          </div>
+          <div class="product-tag"><span class="badge" style="background:#f1c40f;color:#333;">☀️ Protective</span></div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
         </div>
         <div class="product-info">
-          <div class="product-stars">
-            <span class="stars">★★★★★</span>
-            <span>(156 reviews)</span>
-          </div>
+          <div class="product-stars"><span class="stars">★★★★★</span><span>(156 reviews)</span></div>
           <div class="product-name">Sunscreen SPF 50</div>
           <div class="product-desc">Broad spectrum protection • Non-greasy finish</div>
           <div class="product-price">
@@ -392,32 +366,22 @@
             <span class="price-original">₹799</span>
             <span class="price-save">Save 31%</span>
           </div>
-          <button class="product-atc-btn" onclick="addToCart(6, 'Sunscreen SPF 50', 549, this)">
-            Add to Cart
-          </button>
+          <button class="product-atc-btn" onclick="addToCart(6, 'Sunscreen SPF 50', 549, this)">Add to Cart</button>
         </div>
       </div>
 
       <!-- Product 7: Night Repair Cream -->
       <div class="product-card reveal">
         <div class="product-img-wrap">
-          <img 
-            src="images/product_spot_cream.png"
-            alt="Night Repair Cream – ClearoSkin"
-          />
+          <img src="public/images/product_night_cream.png" alt="Night Repair Cream – ClearoSkin" />
           <div class="product-overlay">
-            <button class="product-quick-btn" onclick="window.location.href='product.html?id=7'">Quick View</button>
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=7'">Quick View</button>
           </div>
-          <div class="product-tag"><span class="badge" style="background:#2c3e50;">Active Night</span></div>
-          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist">
-            <span class="heart-icon">🤍</span>
-          </div>
+          <div class="product-tag"><span class="badge" style="background:#2c3e50;">🌙 Active Night</span></div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
         </div>
         <div class="product-info">
-          <div class="product-stars">
-            <span class="stars">★★★★★</span>
-            <span>(88 reviews)</span>
-          </div>
+          <div class="product-stars"><span class="stars">★★★★★</span><span>(88 reviews)</span></div>
           <div class="product-name">Night Repair Cream</div>
           <div class="product-desc">Overnight skin renewal • Deeply nourishing</div>
           <div class="product-price">
@@ -425,32 +389,22 @@
             <span class="price-original">₹1099</span>
             <span class="price-save">Save 32%</span>
           </div>
-          <button class="product-atc-btn" onclick="addToCart(7, 'Night Repair Cream', 749, this)">
-            Add to Cart
-          </button>
+          <button class="product-atc-btn" onclick="addToCart(7, 'Night Repair Cream', 749, this)">Add to Cart</button>
         </div>
       </div>
 
       <!-- Product 8: Exfoliating Scrub -->
       <div class="product-card reveal">
         <div class="product-img-wrap">
-          <img 
-            src="images/product_face_wash.png"
-            alt="Exfoliating Scrub – ClearoSkin"
-          />
+          <img src="public/images/product_scrub.png" alt="Exfoliating Scrub – ClearoSkin" />
           <div class="product-overlay">
-            <button class="product-quick-btn" onclick="window.location.href='product.html?id=8'">Quick View</button>
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=8'">Quick View</button>
           </div>
-          <div class="product-tag"><span class="badge" style="background:#2ecc71;">Refreshing</span></div>
-          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist">
-            <span class="heart-icon">🤍</span>
-          </div>
+          <div class="product-tag"><span class="badge" style="background:#2ecc71;">✨ Refreshing</span></div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
         </div>
         <div class="product-info">
-          <div class="product-stars">
-            <span class="stars">★★★★☆</span>
-            <span>(65 reviews)</span>
-          </div>
+          <div class="product-stars"><span class="stars">★★★★☆</span><span>(65 reviews)</span></div>
           <div class="product-name">Exfoliating Scrub</div>
           <div class="product-desc">Gently removes dead skin • Glowing results</div>
           <div class="product-price">
@@ -458,9 +412,283 @@
             <span class="price-original">₹549</span>
             <span class="price-save">Save 36%</span>
           </div>
-          <button class="product-atc-btn" onclick="addToCart(8, 'Exfoliating Scrub', 349, this)">
-            Add to Cart
-          </button>
+          <button class="product-atc-btn" onclick="addToCart(8, 'Exfoliating Scrub', 349, this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 9: Vitamin C Brightening Serum -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <img src="public/images/product_vitamin_c.png" alt="Vitamin C Brightening Serum – ClearoSkin" />
+          <div class="product-overlay">
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=9'">Quick View</button>
+          </div>
+          <div class="product-tag"><span class="badge" style="background:#e67e22;">🍊 Brightening</span></div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
+        </div>
+        <div class="product-info">
+          <div class="product-stars"><span class="stars">★★★★★</span><span>(112 reviews)</span></div>
+          <div class="product-name">Vitamin C Brightening Serum</div>
+          <div class="product-desc">Brightens dull skin • Evens tone • Antioxidant protection</div>
+          <div class="product-price">
+            <span class="price-current">₹799</span>
+            <span class="price-original">₹1199</span>
+            <span class="price-save">Save 33%</span>
+          </div>
+          <button class="product-atc-btn" onclick="addToCart(9, 'Vitamin C Brightening Serum', 799, this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 10: Under Eye Dark Circle Cream -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <img src="public/images/product_eye_cream.png" alt="Under Eye Dark Circle Cream – ClearoSkin" />
+          <div class="product-overlay">
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=10'">Quick View</button>
+          </div>
+          <div class="product-tag"><span class="badge" style="background:#8e44ad;">👁️ Eye Care</span></div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
+        </div>
+        <div class="product-info">
+          <div class="product-stars"><span class="stars">★★★★★</span><span>(78 reviews)</span></div>
+          <div class="product-name">Under Eye Dark Circle Cream</div>
+          <div class="product-desc">Reduces puffiness • Fades dark circles • Hydrates eye area</div>
+          <div class="product-price">
+            <span class="price-current">₹649</span>
+            <span class="price-original">₹999</span>
+            <span class="price-save">Save 35%</span>
+          </div>
+          <button class="product-atc-btn" onclick="addToCart(10, 'Under Eye Dark Circle Cream', 649, this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 11: Pore Minimizing Primer -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <div class="product-img-emoji-placeholder" style="background:linear-gradient(135deg,#f8bbd0,#fce4ec);font-size:3.5rem;display:flex;align-items:center;justify-content:center;height:100%;border-radius:inherit;">🫧</div>
+          <div class="product-overlay">
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=11'">Quick View</button>
+          </div>
+          <div class="product-tag"><span class="badge" style="background:#e91e63;">💅 Smooth Finish</span></div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
+        </div>
+        <div class="product-info">
+          <div class="product-stars"><span class="stars">★★★★☆</span><span>(54 reviews)</span></div>
+          <div class="product-name">Pore Minimizing Primer</div>
+          <div class="product-desc">Blurs pores • Controls oil • Smooth skin finish</div>
+          <div class="product-price">
+            <span class="price-current">₹449</span>
+            <span class="price-original">₹699</span>
+            <span class="price-save">Save 36%</span>
+          </div>
+          <button class="product-atc-btn" onclick="addToCart(11, 'Pore Minimizing Primer', 449, this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 12: Hydrating Face Mask -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <div class="product-img-emoji-placeholder" style="background:linear-gradient(135deg,#b2dfdb,#e0f2f1);font-size:3.5rem;display:flex;align-items:center;justify-content:center;height:100%;border-radius:inherit;">🎭</div>
+          <div class="product-overlay">
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=12'">Quick View</button>
+          </div>
+          <div class="product-tag"><span class="badge" style="background:#00796b;">💦 Hydration</span></div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
+        </div>
+        <div class="product-info">
+          <div class="product-stars"><span class="stars">★★★★★</span><span>(93 reviews)</span></div>
+          <div class="product-name">Hydrating Face Mask</div>
+          <div class="product-desc">Deep hydration boost • Plumps &amp; soothes skin</div>
+          <div class="product-price">
+            <span class="price-current">₹299</span>
+            <span class="price-original">₹499</span>
+            <span class="price-save">Save 40%</span>
+          </div>
+          <button class="product-atc-btn" onclick="addToCart(12, 'Hydrating Face Mask', 299, this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 13: Gentle Foaming Cleanser -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <div class="product-img-emoji-placeholder" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb);font-size:3.5rem;display:flex;align-items:center;justify-content:center;height:100%;border-radius:inherit;">🫧</div>
+          <div class="product-overlay">
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=13'">Quick View</button>
+          </div>
+          <div class="product-tag"><span class="badge" style="background:#1976d2;">🌊 Gentle</span></div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
+        </div>
+        <div class="product-info">
+          <div class="product-stars"><span class="stars">★★★★☆</span><span>(61 reviews)</span></div>
+          <div class="product-name">Gentle Foaming Cleanser</div>
+          <div class="product-desc">pH-balanced • Removes makeup &amp; impurities gently</div>
+          <div class="product-price">
+            <span class="price-current">₹349</span>
+            <span class="price-original">₹549</span>
+            <span class="price-save">Save 36%</span>
+          </div>
+          <button class="product-atc-btn" onclick="addToCart(13, 'Gentle Foaming Cleanser', 349, this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 14: Retinol Night Serum -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <div class="product-img-emoji-placeholder" style="background:linear-gradient(135deg,#1a237e,#303f9f);font-size:3.5rem;display:flex;align-items:center;justify-content:center;height:100%;border-radius:inherit;">⭐</div>
+          <div class="product-overlay">
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=14'">Quick View</button>
+          </div>
+          <div class="product-tag"><span class="badge" style="background:#1a237e;">🌙 Anti-Aging</span></div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
+        </div>
+        <div class="product-info">
+          <div class="product-stars"><span class="stars">★★★★★</span><span>(47 reviews)</span></div>
+          <div class="product-name">Retinol Night Serum</div>
+          <div class="product-desc">Anti-aging • Boosts cell turnover • Smooths fine lines</div>
+          <div class="product-price">
+            <span class="price-current">₹899</span>
+            <span class="price-original">₹1399</span>
+            <span class="price-save">Save 36%</span>
+          </div>
+          <button class="product-atc-btn" onclick="addToCart(14, 'Retinol Night Serum', 899, this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 15: Activated Charcoal Mask -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <div class="product-img-emoji-placeholder" style="background:linear-gradient(135deg,#263238,#37474f);font-size:3.5rem;display:flex;align-items:center;justify-content:center;height:100%;border-radius:inherit;">🖤</div>
+          <div class="product-overlay">
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=15'">Quick View</button>
+          </div>
+          <div class="product-tag"><span class="badge" style="background:#37474f;">🖤 Deep Clean</span></div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
+        </div>
+        <div class="product-info">
+          <div class="product-stars"><span class="stars">★★★★★</span><span>(89 reviews)</span></div>
+          <div class="product-name">Activated Charcoal Mask</div>
+          <div class="product-desc">Deep-cleanses pores • Removes blackheads</div>
+          <div class="product-price">
+            <span class="price-current">₹399</span>
+            <span class="price-original">₹599</span>
+            <span class="price-save">Save 33%</span>
+          </div>
+          <button class="product-atc-btn" onclick="addToCart(15, 'Activated Charcoal Mask', 399, this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 16: Kojic Acid Brightening Soap -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <div class="product-img-emoji-placeholder" style="background:linear-gradient(135deg,#fff9c4,#fff176);font-size:3.5rem;display:flex;align-items:center;justify-content:center;height:100%;border-radius:inherit;">✨</div>
+          <div class="product-overlay">
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=16'">Quick View</button>
+          </div>
+          <div class="product-tag"><span class="badge" style="background:#f9a825;color:#333;">💡 Brightening</span></div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
+        </div>
+        <div class="product-info">
+          <div class="product-stars"><span class="stars">★★★★☆</span><span>(36 reviews)</span></div>
+          <div class="product-name">Kojic Acid Brightening Soap</div>
+          <div class="product-desc">Fades pigmentation • Brightens skin tone</div>
+          <div class="product-price">
+            <span class="price-current">₹199</span>
+            <span class="price-original">₹349</span>
+            <span class="price-save">Save 43%</span>
+          </div>
+          <button class="product-atc-btn" onclick="addToCart(16, 'Kojic Acid Brightening Soap', 199, this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 17: Tea Tree Spot Gel -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <div class="product-img-emoji-placeholder" style="background:linear-gradient(135deg,#c8e6c9,#a5d6a7);font-size:3.5rem;display:flex;align-items:center;justify-content:center;height:100%;border-radius:inherit;">🌿</div>
+          <div class="product-overlay">
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=17'">Quick View</button>
+          </div>
+          <div class="product-tag"><span class="badge" style="background:#388e3c;">🌿 Spot Fix</span></div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
+        </div>
+        <div class="product-info">
+          <div class="product-stars"><span class="stars">★★★★★</span><span>(73 reviews)</span></div>
+          <div class="product-name">Tea Tree Spot Gel</div>
+          <div class="product-desc">Fast-acting spot treatment • Reduces redness</div>
+          <div class="product-price">
+            <span class="price-current">₹249</span>
+            <span class="price-original">₹399</span>
+            <span class="price-save">Save 38%</span>
+          </div>
+          <button class="product-atc-btn" onclick="addToCart(17, 'Tea Tree Spot Gel', 249, this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 18: Aloe Vera Soothing Gel -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <div class="product-img-emoji-placeholder" style="background:linear-gradient(135deg,#dcedc8,#c5e1a5);font-size:3.5rem;display:flex;align-items:center;justify-content:center;height:100%;border-radius:inherit;">🌱</div>
+          <div class="product-overlay">
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=18'">Quick View</button>
+          </div>
+          <div class="product-tag"><span class="badge" style="background:#558b2f;">🌱 Soothing</span></div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
+        </div>
+        <div class="product-info">
+          <div class="product-stars"><span class="stars">★★★★☆</span><span>(49 reviews)</span></div>
+          <div class="product-name">Aloe Vera Soothing Gel</div>
+          <div class="product-desc">Calms irritation &amp; redness • Soothes sun-damaged skin</div>
+          <div class="product-price">
+            <span class="price-current">₹299</span>
+            <span class="price-original">₹449</span>
+            <span class="price-save">Save 33%</span>
+          </div>
+          <button class="product-atc-btn" onclick="addToCart(18, 'Aloe Vera Soothing Gel', 299, this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 19: Niacinamide Essence -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <div class="product-img-emoji-placeholder" style="background:linear-gradient(135deg,#e8eaf6,#c5cae9);font-size:3.5rem;display:flex;align-items:center;justify-content:center;height:100%;border-radius:inherit;">💎</div>
+          <div class="product-overlay">
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=19'">Quick View</button>
+          </div>
+          <div class="product-tag"><span class="badge" style="background:#5c6bc0;">💎 Pore-Care</span></div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
+        </div>
+        <div class="product-info">
+          <div class="product-stars"><span class="stars">★★★★★</span><span>(58 reviews)</span></div>
+          <div class="product-name">Niacinamide Essence</div>
+          <div class="product-desc">Minimizes pores • Balances sebum • Brightens complexion</div>
+          <div class="product-price">
+            <span class="price-current">₹549</span>
+            <span class="price-original">₹849</span>
+            <span class="price-save">Save 35%</span>
+          </div>
+          <button class="product-atc-btn" onclick="addToCart(19, 'Niacinamide Essence', 549, this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 20: AHA/BHA Chemical Exfoliant -->
+      <div class="product-card reveal">
+        <div class="product-img-wrap">
+          <div class="product-img-emoji-placeholder" style="background:linear-gradient(135deg,#fce4ec,#f48fb1);font-size:3.5rem;display:flex;align-items:center;justify-content:center;height:100%;border-radius:inherit;">🧪</div>
+          <div class="product-overlay">
+            <button class="product-quick-btn" onclick="window.location.href='/public/pages/product.html?id=20'">Quick View</button>
+          </div>
+          <div class="product-tag"><span class="badge" style="background:#ad1457;">🔬 Resurfacing</span></div>
+          <div class="product-wishlist" onclick="toggleWishlist(this)" title="Add to Wishlist"><span class="heart-icon">🤍</span></div>
+        </div>
+        <div class="product-info">
+          <div class="product-stars"><span class="stars">★★★★★</span><span>(41 reviews)</span></div>
+          <div class="product-name">AHA/BHA Chemical Exfoliant</div>
+          <div class="product-desc">Resurfaces skin • Reduces dullness &amp; uneven texture</div>
+          <div class="product-price">
+            <span class="price-current">₹649</span>
+            <span class="price-original">₹999</span>
+            <span class="price-save">Save 35%</span>
+          </div>
+          <button class="product-atc-btn" onclick="addToCart(20, 'AHA/BHA Chemical Exfoliant', 649, this)">Add to Cart</button>
         </div>
       </div>
     </div>
@@ -552,7 +780,7 @@
       <!-- Image -->
       <div class="highlights-img reveal">
         <img 
-          src="images/product_serum.png"
+          src="public/images/product_serum.png"
           alt="ClearoSkin Anti-Acne Serum key ingredients"
         />
         <div class="highlights-badge">
@@ -599,7 +827,7 @@
         </div>
 
         <div style="margin-top:32px;">
-          <a href="product.html?id=2" class="btn btn-primary">Get Clear Skin Now →</a>
+          <a href="/public/pages/product.html?id=2" class="btn btn-primary">Get Clear Skin Now →</a>
         </div>
       </div>
     </div>
@@ -731,7 +959,7 @@
 <!-- ════════════════════════════════════════
      FOOTER
 ════════════════════════════════════════ -->
-<footer id="footer" id="about">
+<footer id="footer-about">
   <div class="footer-inner">
 
     <!-- Brand -->
@@ -750,10 +978,10 @@
     <div class="footer-col">
       <h4>Quick Links</h4>
       <ul>
-        <li><a href="index.html">Home</a></li>
+        <li><a href="/">Home</a></li>
         <li><a href="#collections">Collections</a></li>
         <li><a href="#products">Shop All</a></li>
-        <li><a href="cart.html">My Cart</a></li>
+        <li><a href="/public/pages/cart.html">My Cart</a></li>
         <li><a href="#testimonials">Reviews</a></li>
       </ul>
     </div>
@@ -799,7 +1027,7 @@
      STICKY CART
 ════════════════════════════════════════ -->
 <div id="sticky-cart">
-  <a href="cart.html" class="sticky-cart-btn">
+  <a href="/public/pages/cart.html" class="sticky-cart-btn">
     🛒 View Cart &nbsp;<span id="sticky-cart-count">0 items</span>
   </a>
 </div>
@@ -863,6 +1091,6 @@
   </div>
 </div>
 
-<script src="script.js"></script>
+<script src="public/js/script.js"></script>
 </body>
 </html>
