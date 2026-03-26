@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product – ClearoSkin</title>
+  <meta name="description" content="Shop ClearoSkin skincare products. Dermatologically tested for acne, oily skin, and dark spots." />
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .product-page { padding: 60px 0; background: var(--white); }
+    .product-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .gallery { position: sticky; top: 100px; }
+    .gallery-main { border-radius: var(--radius-lg); overflow: hidden; background: var(--mint-light); aspect-ratio: 1; margin-bottom: 16px; border: 1px solid var(--border); display:flex;align-items:center;justify-content:center;font-size:6rem; }
+    .gallery-main img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .gallery-main:hover img { transform: scale(1.04); }
+    .gallery-thumbs { display: flex; gap: 12px; }
+    .gallery-thumb { width: 80px; height: 80px; border-radius: var(--radius-md); overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: var(--transition); flex-shrink: 0; display:flex;align-items:center;justify-content:center;background:var(--mint-light);font-size:2rem; }
+    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-thumb:hover, .gallery-thumb.active { border-color: var(--teal); }
+    .product-page-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; color: var(--text-dark); margin-bottom: 12px; }
+    .product-page-rating { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .product-page-price { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
+    .product-page-price .current { font-family: var(--font-head); font-size: 2rem; font-weight: 800; color: var(--teal-dark); }
+    .product-page-price .original { font-size: 1.1rem; color: var(--text-light); text-decoration: line-through; }
+    .product-page-price .save-pct { background: #ffe8e8; color: #e74c3c; font-size: 0.8rem; font-weight: 700; padding: 4px 12px; border-radius: var(--radius-pill); font-family: var(--font-head); }
+    .product-divider { height: 1px; background: var(--border); margin: 24px 0; }
+    .variant-options { display: flex; gap: 10px; margin-bottom: 20px; }
+    .variant-btn { padding: 8px 20px; border-radius: var(--radius-pill); border: 2px solid var(--border); font-family: var(--font-head); font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: var(--transition); background: white; }
+    .variant-btn:hover, .variant-btn.active { border-color: var(--teal); color: var(--teal); background: var(--teal-glow); }
+    .quantity-wrap { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .quantity-control { display: flex; align-items: center; border: 2px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+    .qty-btn { width: 44px; height: 44px; font-size: 1.2rem; color: var(--text-dark); cursor: pointer; background: none; border: none; transition: var(--transition); }
+    .qty-btn:hover { background: var(--mint-light); color: var(--teal); }
+    .qty-input { width: 56px; text-align: center; border: none; border-left: 2px solid var(--border); border-right: 2px solid var(--border); font-family: var(--font-head); font-size: 1rem; font-weight: 700; outline: none; height: 44px; }
+    .product-cta-group { display: flex; gap: 12px; margin-bottom: 24px; }
+    .atc-main { flex: 1; padding: 16px; font-size: 1rem; justify-content: center; border-radius: var(--radius-md); }
+    .buy-now-btn { flex: 1; background: var(--text-dark); color: white; font-family: var(--font-head); font-weight: 700; padding: 16px; border-radius: var(--radius-md); transition: var(--transition); font-size: 1rem; }
+    .buy-now-btn:hover { background: #000; }
+    .product-trust { display: flex; gap: 16px; flex-wrap: wrap; padding: 20px; background: var(--mint-light); border-radius: var(--radius-md); border: 1px solid var(--border); }
+    .p-trust-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-family: var(--font-head); font-weight: 600; color: var(--text-mid); }
+    .tab-buttons { display: flex; border-bottom: 2px solid var(--border); margin: 32px 0 24px; }
+    .tab-btn { padding: 14px 24px; font-family: var(--font-head); font-size: 0.9rem; font-weight: 600; color: var(--text-light); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: var(--transition); cursor: pointer; background: none; border-top: none; border-left: none; border-right: none; }
+    .tab-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .b-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+    .b-item .ico { font-size: 1.2rem; margin-top: 2px; flex-shrink: 0; }
+    .b-item div strong { font-family: var(--font-head); font-size: 0.9rem; color: var(--text-dark); display: block; margin-bottom: 2px; }
+    .b-item div span { font-size: 0.83rem; color: var(--text-mid); }
+    #sticky-atc { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--border); padding: 16px 24px; z-index: 800; display: flex; align-items: center; justify-content: space-between; gap: 16px; box-shadow: 0 -4px 16px rgba(0,0,0,0.08); transform: translateY(100%); transition: transform var(--transition); }
+    #sticky-atc.visible { transform: translateY(0); }
+    .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    @media (max-width: 768px) { .product-layout { grid-template-columns: 1fr; gap: 32px; } .gallery { position: static; } .product-cta-group { flex-direction: column; } .related-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<div id="announcement-bar">🎉 <span>FREE SHIPPING</span> on orders above ₹499 &nbsp;|&nbsp; Use code <span>CLEAR20</span> for 20% off!</div>
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Clearo<span>Skin</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/#collections">Collections</a></li>
+      <li><a href="/#products">Shop</a></li>
+      <li><a href="/public/pages/skin-analyzer.html" style="color:var(--teal);font-weight:700;">✨ AI Skin Analyzer</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#" class="nav-icon-btn" title="Search" id="search-btn">🔍</a>
+      <a href="/public/pages/cart.html" class="nav-icon-btn" title="Cart">🛒<span class="cart-count" id="cart-count">0</span></a>
+      <a href="/public/pages/login.html" class="btn btn-outline btn-sm" id="nav-login-btn">Login</a>
+      <a href="/public/pages/signup.html" class="btn btn-primary btn-sm" id="nav-signup-btn">Sign Up</a>
+      <div class="hamburger" id="hamburger-btn"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<section class="product-page">
+  <div class="container">
+    <div class="product-breadcrumb" style="display:flex;gap:8px;font-size:0.82rem;color:var(--text-light);margin-bottom:16px;">
+      <a href="/" style="color:var(--text-light);">Home</a> /
+      <a href="/#products" style="color:var(--text-light);">Shop</a> /
+      <span id="breadcrumb-name">Product</span>
+    </div>
+    <div class="product-layout">
+      <!-- Gallery -->
+      <div class="gallery">
+        <div class="gallery-main" id="gallery-main">
+          <span id="main-emoji" style="font-size:6rem;"></span>
+          <img id="main-img" src="" alt="" style="display:none;" />
+        </div>
+        <div class="gallery-thumbs" id="gallery-thumbs"></div>
+      </div>
+      <!-- Info Panel -->
+      <div>
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+          <span class="badge" id="product-badge">Best Seller</span>
+          <span class="badge badge-teal">✅ In Stock</span>
+        </div>
+        <h1 class="product-page-title" id="product-title">Loading...</h1>
+        <p style="color:var(--text-mid);font-size:0.9rem;margin-bottom:14px;" id="product-tagline"></p>
+        <div class="product-page-rating">
+          <span class="stars" id="product-stars">★★★★★</span>
+          <strong style="font-family:var(--font-head);font-size:0.9rem;" id="product-rating">4.8</strong>
+          <a href="#reviews" id="product-reviews-link">0 reviews</a>
+          <span style="font-size:0.82rem;color:var(--text-light);" id="product-sold"></span>
+        </div>
+        <div class="product-page-price">
+          <span class="current" id="product-price">₹0</span>
+          <span class="original" id="product-mrp">₹0</span>
+          <span class="save-pct" id="product-discount">Save 0%</span>
+        </div>
+        <p style="font-size:0.78rem;color:var(--text-light);margin-bottom:20px;">Inclusive of all taxes. Free shipping on orders ₹499+.</p>
+        <div class="product-divider"></div>
+        <div style="font-family:var(--font-head);font-size:0.85rem;font-weight:700;margin-bottom:10px;">Size</div>
+        <div class="variant-options">
+          <button class="variant-btn active" onclick="selectVariant(this)">30ml</button>
+          <button class="variant-btn" onclick="selectVariant(this)">50ml (+₹200)</button>
+          <button class="variant-btn" onclick="selectVariant(this)">Bundle Pack</button>
+        </div>
+        <div class="quantity-wrap">
+          <span style="font-family:var(--font-head);font-size:0.85rem;font-weight:700;">Quantity</span>
+          <div class="quantity-control">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <input type="number" class="qty-input" id="qty" value="1" min="1" max="10" readonly />
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+          <span style="font-size:0.8rem;color:var(--text-light);">Only 24 left!</span>
+        </div>
+        <div class="product-cta-group">
+          <button class="btn btn-primary atc-main" id="page-atc-btn" onclick="addToCartPage()">🛒 Get Clear Skin Now</button>
+          <button class="buy-now-btn" onclick="window.location.href='/public/pages/cart.html'">⚡ Buy Now</button>
+        </div>
+        <div class="product-trust">
+          <div class="p-trust-item">🧪 Derm-Tested</div>
+          <div class="p-trust-item">🔄 30-Day Return</div>
+          <div class="p-trust-item">🚚 Fast Delivery</div>
+          <div class="p-trust-item">🔒 Secure Payment</div>
+        </div>
+        <div style="margin-top:16px;background:var(--teal-glow);border-radius:var(--radius-md);padding:12px 16px;font-family:var(--font-head);font-size:0.82rem;color:var(--teal-dark);display:flex;align-items:center;gap:8px;">
+          🔥 <span id="social-proof-ticker">14 people are viewing this right now</span>
+        </div>
+        <div class="tab-buttons">
+          <button class="tab-btn active" onclick="switchTab(this,'tab-benefits')">Benefits</button>
+          <button class="tab-btn" onclick="switchTab(this,'tab-ingredients')">Ingredients</button>
+          <button class="tab-btn" onclick="switchTab(this,'tab-how-to-use')">How to Use</button>
+        </div>
+        <div class="tab-content active" id="tab-benefits"></div>
+        <div class="tab-content" id="tab-ingredients"></div>
+        <div class="tab-content" id="tab-how-to-use"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reviews" style="background:var(--mint-light);padding:60px 0;">
+  <div class="container">
+    <div style="margin-bottom:32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+      <div><span class="section-label">Customer Reviews</span><h2>What Customers Say</h2></div>
+      <div style="text-align:right;"><div style="font-size:2rem;font-weight:800;font-family:var(--font-head);" id="rev-score">4.8/5</div><div style="color:#FFB800;font-size:1.3rem;">★★★★★</div><p style="font-size:0.8rem;color:var(--text-light);" id="rev-count">reviews</p></div>
+    </div>
+    <div id="reviews-list"></div>
+  </div>
+</section>
+
+<footer style="background:var(--text-dark);padding:32px 24px;text-align:center;">
+  <a href="/" class="nav-logo" style="color:white;font-size:1.4rem;display:inline-block;margin-bottom:12px;">Clearo<span>Skin</span></a>
+  <p style="color:rgba(255,255,255,0.4);font-size:0.82rem;">© 2026 ClearoSkin. All rights reserved.</p>
+</footer>
+
+<div id="sticky-atc">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <div id="sticky-emoji" style="width:48px;height:48px;border-radius:8px;background:var(--mint-light);display:flex;align-items:center;justify-content:center;font-size:1.6rem;"></div>
+    <div><strong style="font-family:var(--font-head);font-size:1rem;display:block;" id="sticky-name">Product</strong><span style="font-size:0.85rem;color:var(--text-light);">30ml · Derm-Tested</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <span style="font-family:var(--font-head);font-size:1.3rem;font-weight:800;color:var(--teal-dark);" id="sticky-price">₹0</span>
+    <button class="btn btn-primary" onclick="addToCartPage()">🛒 Add to Cart</button>
+  </div>
+</div>
+
+<div id="toast"><span class="toast-icon">✅</span><span id="toast-msg">Added to cart!</span></div>
+
+<div id="search-overlay" class="search-overlay">
+  <div class="search-container">
+    <div class="search-header">
+      <div class="nav-logo">Clearo<span>Skin</span></div>
+      <button class="close-search" id="close-search">✕</button>
+    </div>
+    <div class="search-body">
+      <h2 class="search-title">What are you looking for?</h2>
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Search for acne wash, serum, skin type..." autofocus />
+      </div>
+      <div id="search-results-info" class="search-results-info"></div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/script.js"></script>
+<script>
+const PRODUCTS = {
+  1:  { name:'Acne Control Face Wash', price:299, mrp:499, discount:'Save 40%', rating:'4.9', reviews:324, sold:'3.2K+ sold', badge:'Best Seller', tagline:'Removes oil & dirt, prevents breakouts with a gentle, pH-balanced formula.', emoji:'🧴', img:'../images/product_face_wash.png',
+        benefits:[['✅','Removes Excess Oil','Salicylic acid cuts through oil and unclogs pores effectively.'],['🌿','Gentle Formula','pH-balanced, non-stripping cleanser safe for daily use.'],['💧','Prevents Breakouts','Fights acne-causing bacteria before they cause new pimples.'],['✨','Soft & Fresh Skin','Leaves skin feeling clean without the tightness.']],
+        ingredients:[['🫙','Salicylic Acid (2%)','BHA that penetrates pores to dissolve debris and excess oil.'],['🌿','Tea Tree Extract','Natural antibacterial to fight breakout-causing bacteria.'],['💧','Aloe Vera','Soothes and calms the skin post-cleanse.']],
+        howto:[['1️⃣','Wet Face','Splash face with lukewarm water.'],['2️⃣','Apply Wash','Take a pea-sized amount and lather into a foam.'],['3️⃣','Massage','Gently massage in circular motions for 60 seconds.'],['4️⃣','Rinse','Rinse thoroughly. Use twice daily — AM & PM.']] },
+  2:  { name:'Anti-Acne Serum', price:699, mrp:999, discount:'Save 30%', rating:'4.9', reviews:218, sold:'2.1K+ sold', badge:'⚡ Most Effective', tagline:'Reduces pimples, fades scars, and controls oil — fast-absorbing and derm-tested.', emoji:'💊', img:'../images/product_serum.png',
+        benefits:[['✅','Reduces Active Breakouts','Salicylic acid targets clogged pores in 3–5 days.'],['✨','Fades Acne Scars','Niacinamide brightens hyperpigmentation over 3–4 weeks.'],['💧','Hydrates Without Greasiness','Lightweight hyaluronic acid formula.'],['🌿','Anti-Bacterial Action','Tea tree fights acne bacteria without irritating.']],
+        ingredients:[['🫙','Salicylic Acid (2%)','Oil-soluble BHA that penetrates pores.'],['💉','Niacinamide (4%)','Vitamin B3 that fades spots and reduces pore size.'],['🌿','Tea Tree Leaf Extract','Anti-bacterial against Propionibacterium acnes.'],['💧','Hyaluronic Acid','Draws moisture into skin.']],
+        howto:[['1️⃣','Cleanse','Wash face with Face Wash. Pat dry.'],['2️⃣','Apply','Take 3–4 drops and apply all over face.'],['3️⃣','Absorb','Wait 60 seconds. Do NOT rinse.'],['4️⃣','Moisturize','Follow with Oil-Free Moisturizer. Use AM & PM.']] },
+  3:  { name:'Oil-Free Moisturizer', price:499, mrp:799, discount:'Save 38%', rating:'4.7', reviews:176, sold:'1.8K+ sold', badge:'🌿 Fan Fav', tagline:'Hydrates without clogging pores — lightweight, matte-finish daily moisturizer.', emoji:'💧', img:'../images/product_moisturizer.png',
+        benefits:[['💧','Deep Hydration','Hyaluronic acid draws moisture into skin.'],['🌿','Non-Comedogenic','Won\'t clog pores or cause new breakouts.'],['✅','Matte Finish','Controls shine throughout the day.'],['✨','Lightweight Feel','Absorbs instantly — no sticky residue.']],
+        ingredients:[['💧','Hyaluronic Acid','Holds 1000x its weight in water for deep hydration.'],['🌿','Niacinamide (2%)','Refines pores and balances oil.'],['💧','Glycerin','Humectant that locks in moisture.']],
+        howto:[['1️⃣','Cleanse','Wash face and pat dry.'],['2️⃣','Tone','Apply toner if using.'],['3️⃣','Moisturize','Take a pea-sized amount and spread evenly.'],['4️⃣','Protect','Follow with SPF in the morning.']] },
+  4:  { name:'Spot Removal Cream', price:599, mrp:899, discount:'Save 33%', rating:'4.8', reviews:94, sold:'900+ sold', badge:'🔥 Hot Deal', tagline:'Targets dark spots and acne scars — visibly brightens skin tone in 3–5 weeks.', emoji:'✨', img:'../images/product_spot_cream.png',
+        benefits:[['✨','Fades Dark Spots','Kojic acid and niacinamide visibly reduce hyperpigmentation.'],['🌿','Even Skin Tone','Brightens uneven patches and post-acne marks.'],['💧','Fast Absorbing','Lightweight cream that absorbs quickly.'],['✅','Daily Use Safe','Gentle enough for morning and night use.']],
+        ingredients:[['✨','Kojic Acid','Inhibits melanin production to fade dark spots.'],['💉','Niacinamide (5%)','Brightens and evens skin tone.'],['🌿','Vitamin C','Antioxidant that boosts brightness.']],
+        howto:[['1️⃣','Cleanse','Wash and dry face thoroughly.'],['2️⃣','Apply','Dab a small amount on dark spots or apply all over.'],['3️⃣','Massage','Gently massage until absorbed.'],['4️⃣','Protect','Always follow with SPF during the day.']] },
+  5:  { name:'Clarifying Toner', price:399, mrp:599, discount:'Save 33%', rating:'4.6', reviews:42, sold:'400+ sold', badge:'New', tagline:'Pore-refining toner that balances skin pH and preps skin for serums.', emoji:'🍃', img:'../images/product_toner.png',
+        benefits:[['🍃','Tightens Pores','Witch hazel minimizes the appearance of pores.'],['💧','Balances pH','Restores skins natural acid mantle.'],['✨','Prepping Step','Boosts absorption of serums applied after.'],['🌿','Refreshing Feel','Instantly cools and refreshes skin.']],
+        ingredients:[['🍃','Witch Hazel','Astringent that tightens pores and controls oil.'],['💧','Rose Water','Anti-inflammatory and soothing.'],['🌿','Green Tea Extract','Antioxidant that reduces redness.']],
+        howto:[['1️⃣','Cleanse','Use after face wash.'],['2️⃣','Apply','Soak a cotton pad or pat directly onto face.'],['3️⃣','Wait','Let absorb for 30 seconds.'],['4️⃣','Continue Routine','Apply serum or moisturizer next.']] },
+  6:  { name:'Sunscreen SPF 50', price:549, mrp:799, discount:'Save 31%', rating:'4.8', reviews:156, sold:'1.5K+ sold', badge:'☀️ Protective', tagline:'Broad spectrum SPF 50 protection — non-greasy, no white cast, daily wear.', emoji:'☀️', img:'../images/product_sunscreen.png',
+        benefits:[['☀️','Broad Spectrum SPF 50','Blocks UVA and UVB rays.'],['✅','No White Cast','Invisible finish suitable for all skin tones.'],['💧','Lightweight','Non-greasy formula comfortable for daily wear.'],['🌿','Skin Friendly','Paraben-free and fragrance-free.']],
+        ingredients:[['☀️','Zinc Oxide','Mineral blocker that reflects UV rays.'],['🌿','Titanium Dioxide','Physical sun filter.'],['💧','Hyaluronic Acid','Keeps skin hydrated under SPF.']],
+        howto:[['1️⃣','Last Step','Apply as the final step of your morning routine.'],['2️⃣','Amount','Use a 2-finger length for the face.'],['3️⃣','Spread','Apply evenly across face, neck, and ears.'],['4️⃣','Reapply','Every 2–3 hours if outdoors.']] },
+  7:  { name:'Night Repair Cream', price:749, mrp:1099, discount:'Save 32%', rating:'4.9', reviews:88, sold:'850+ sold', badge:'🌙 Active Night', tagline:'Overnight skin renewal cream — deeply nourishing while you sleep.', emoji:'🌙', img:'../images/product_night_cream.png',
+        benefits:[['🌙','Overnight Renewal','Retinol boosts cell turnover while you sleep.'],['💧','Deep Nourishment','Rich shea butter and ceramides restore the skin barrier.'],['✨','Fades Fine Lines','Smooths skin texture over 4–6 weeks.'],['🌿','Heals Damaged Skin','Repairs environmental damage overnight.']],
+        ingredients:[['🌙','Retinol (0.1%)','Gentle retinol for overnight cell renewal.'],['💧','Shea Butter','Rich emollient that deeply nourishes dry skin.'],['🌿','Ceramides','Restore protective skin barrier.']],
+        howto:[['1️⃣','Evening Only','Use as the last step of your night routine.'],['2️⃣','Amount','Take a pea-sized amount.'],['3️⃣','Apply','Gently massage onto face and neck.'],['4️⃣','Sleep','Leave on overnight. Rinse in the morning.']] },
+  8:  { name:'Exfoliating Scrub', price:349, mrp:549, discount:'Save 36%', rating:'4.6', reviews:65, sold:'600+ sold', badge:'✨ Refreshing', tagline:'Gently removes dead skin cells for a brighter, smoother, glowing complexion.', emoji:'🌀', img:'../images/product_scrub.png',
+        benefits:[['🌀','Removes Dead Skin','Micro-exfoliating particles sweep away dullness.'],['✨','Reveals Glow','Brightens skin immediately after first use.'],['💧','Unclogs Pores','Lifts embedded dirt and excess oil.'],['🌿','Gentle Formula','Safe for daily use on sensitive skin.']],
+        ingredients:[['🌀','Rice Bran Powder','Fine natural exfoliant that is gentle on skin.'],['🌿','Papaya Extract','Enzymatic exfolian that dissolves dead skin.'],['💧','Aloe Vera','Soothes and hydrates post-exfoliation.']],
+        howto:[['1️⃣','Wet Skin','Apply to damp face with lukewarm water.'],['2️⃣','Massage','Gently massage in circular motions for 1 minute.'],['3️⃣','Rinse','Rinse thoroughly with cool water.'],['4️⃣','Moisturize','Follow with your moisturizer. Use 2–3x per week.']] },
+  9:  { name:'Vitamin C Brightening Serum', price:799, mrp:1199, discount:'Save 33%', rating:'4.9', reviews:112, sold:'1.1K+ sold', badge:'🍊 Brightening', tagline:'Brightens dull skin, evens tone, and provides antioxidant protection all day.', emoji:'🍊', img:'../images/product_vitamin_c.png',
+        benefits:[['🍊','Brightens Skin','Vitamin C fades dullness and boosts radiance.'],['✨','Evens Skin Tone','Reduces sun spots and uneven pigmentation.'],['🌿','Antioxidant Shield','Neutralizes free radicals from UV and pollution.'],['💧','Boosts Collagen','Improves skin elasticity over time.']],
+        ingredients:[['🍊','Vitamin C (15%)','Stable ascorbic acid for brightening.'],['💧','Ferulic Acid','Stabilises Vitamin C and boosts efficacy.'],['🌿','Niacinamide (3%)','Enhances brightening and reduces hyperpigmentation.']],
+        howto:[['1️⃣','Morning Only','Apply in the AM routine for best results.'],['2️⃣','Cleanse & Tone','After cleansing and toning.'],['3️⃣','Apply','2–3 drops on face, blend gently.'],['4️⃣','Protect','Always follow with SPF — Vitamin C increases sun sensitivity.']] },
+  10: { name:'Under Eye Dark Circle Cream', price:649, mrp:999, discount:'Save 35%', rating:'4.8', reviews:78, sold:'780+ sold', badge:'👁️ Eye Care', tagline:'Reduces dark circles, puffiness, and fine lines around the delicate eye area.', emoji:'👁️', img:'../images/product_eye_cream.png',
+        benefits:[['👁️','Fades Dark Circles','Caffeine and vitamin K reduce discolouration.'],['💧','De-Puffs Eyes','Reduces morning puffiness and under-eye bags.'],['✨','Smooths Fine Lines','Peptides firm and plump the eye area.'],['🌿','Hydrates Eye Area','Deeply nourishes delicate periorbital skin.']],
+        ingredients:[['☕','Caffeine (5%)','Constricts blood vessels to reduce dark circles.'],['💉','Peptides','Stimulate collagen for firmer eye area.'],['💧','Hyaluronic Acid','Plumping hydration for delicate under-eye skin.']],
+        howto:[['1️⃣','Clean Face','Use after cleansing and toning.'],['2️⃣','Tiny Amount','Take a grain of rice amount.'],['3️⃣','Pat Gently','Dab gently under eye — do not rub.'],['4️⃣','Morning & Night','Use twice daily for best results.']] },
+  11: { name:'Pore Minimizing Primer', price:449, mrp:699, discount:'Save 36%', rating:'4.5', reviews:54, sold:'520+ sold', badge:'💅 Smooth', tagline:'Blurs pores, controls oil, and creates a silky-smooth base for makeup or bare skin.', emoji:'🫧', img:'',
+        benefits:[['🫧','Blurs Pores','Silicone-free formula optically reduces pore appearance.'],['💧','Controls Oil','Absorbs excess sebum for an all-day matte look.'],['✨','Smooth Base','Creates a silky canvas for makeup or solo wear.'],['🌿','Lightweight','Thin, breathable texture that doesn\'t clog pores.']],
+        ingredients:[['🫧','Niacinamide (10%)','Dramatically minimizes pore size over time.'],['🌿','Zinc PCA','Sebum-control ingredient for oily skin.'],['💧','Aloe Vera','Soothes and hydrates beneath the primer.']],
+        howto:[['1️⃣','After Skincare','Apply as last step before makeup or going out.'],['2️⃣','Small Amount','A pea-sized amount covers the full face.'],['3️⃣','Blend','Blend with fingertips or brush over pores.'],['4️⃣','Layer Makeup','Apply foundation or go bare skin—both work perfectly.']] },
+  12: { name:'Hydrating Face Mask', price:299, mrp:499, discount:'Save 40%', rating:'4.9', reviews:93, sold:'900+ sold', badge:'💦 Hydration', tagline:'Intensive hydration boost that plumps, soothes, and revitalises tired skin.', emoji:'🎭', img:'',
+        benefits:[['💦','Deep Hydration','Hyaluronic acid quenches dehydrated skin instantly.'],['✨','Plumps Skin','Restores fullness and suppleness.'],['🌿','Soothes Redness','Aloe and chamomile calm irritated skin.'],['💧','Glowing Results','Skin looks luminous after just 15 minutes.']],
+        ingredients:[['💧','Hyaluronic Acid','Multi-weight HA penetrates all skin layers.'],['🌿','Chamomile Extract','Anti-inflammatory calming agent.'],['✨','Glycerin','Humectant that draws and holds moisture.']],
+        howto:[['1️⃣','Cleanse','Apply to clean, dry skin.'],['2️⃣','Apply Mask','Spread a thick layer over face avoiding eyes.'],['3️⃣','Wait','Leave on for 15–20 minutes.'],['4️⃣','Remove','Rinse off or massage in the remaining serum. Use 2x/week.']] },
+  13: { name:'Gentle Foaming Cleanser', price:349, mrp:549, discount:'Save 36%', rating:'4.6', reviews:61, sold:'580+ sold', badge:'🌊 Gentle', tagline:'pH-balanced foaming cleanser — removes makeup and impurities without stripping.', emoji:'🫧', img:'',
+        benefits:[['🌊','pH-Balanced','Preserves skin\'s natural protective barrier.'],['💧','Removes Makeup','Dissolves makeup and sunscreen thoroughly.'],['🌿','Non-Stripping','Won\'t leave skin feeling tight or dry.'],['✨','Gentle Daily Use','Safe for sensitive and acne-prone skin.']],
+        ingredients:[['🌊','Amino Acid Surfactants','Ultra-mild cleansing agents derived from natural amino acids.'],['🌿','Chamomile','Anti-inflammatory botanical for sensitive skin.'],['💧','Panthenol','Vitamin B5 that conditions and soothes.']], 
+        howto:[['1️⃣','Wet Face','Use with lukewarm water.'],['2️⃣','Pump','1–2 pumps are enough for full face.'],['3️⃣','Lather','Build a gentle foam and massage in.'],['4️⃣','Rinse','Rinse with cool water. Use AM & PM.']] },
+  14: { name:'Retinol Night Serum', price:899, mrp:1399, discount:'Save 36%', rating:'4.8', reviews:47, sold:'460+ sold', badge:'🌙 Anti-Aging', tagline:'Anti-aging retinol serum — boosts cell turnover and smooths fine lines overnight.', emoji:'⭐', img:'',
+        benefits:[['⭐','Reduces Fine Lines','Retinol stimulates collagen production.'],['✨','Evens Skin Texture','Resurfaces rough, uneven skin over 4–8 weeks.'],['💧','Fades Dark Spots','Accelerates skin renewal to fade hyperpigmentation.'],['🌿','Firms Skin','Improves skin elasticity and firmness.']],
+        ingredients:[['⭐','Retinol (0.3%)','Clinically proven anti-aging active.'],['💧','Squalane','Luxurious oil that nourishes while retinol works.'],['🌿','Bakuchiol','Plant-based retinol booster that reduces irritation.']],
+        howto:[['1️⃣','Night Only','Use strictly at night — retinol degrades in sunlight.'],['2️⃣','Start Slow','Begin with 2–3x per week, build up to nightly.'],['3️⃣','Apply','3–4 drops after toner on completely dry skin.'],['4️⃣','Moisturize','Follow with Night Repair Cream. Always use SPF next morning.']] },
+  15: { name:'Activated Charcoal Mask', price:399, mrp:599, discount:'Save 33%', rating:'4.8', reviews:89, sold:'870+ sold', badge:'🖤 Deep Clean', tagline:'Deep-cleansing charcoal mask that draws out blackheads and purifies pores.', emoji:'🖤', img:'',
+        benefits:[['🖤','Deep Cleanses Pores','Charcoal magnetically draws out dirt and blackheads.'],['✨','Removes Blackheads','Unclogs and visibly reduces blackhead clusters.'],['💧','Reduces Oiliness','Controls excess sebum production.'],['🌿','Purifying Effect','Leaves skin feeling refreshed and clean.']],
+        ingredients:[['🖤','Activated Charcoal','Adsorbs impurities from deep within pores.'],['🌿','Kaolin Clay','Absorbs excess oil without over-drying.'],['💧','Tea Tree Oil','Antibacterial to prevent new pore blockages.']],
+        howto:[['1️⃣','Clean Face','Apply to cleansed, dry skin.'],['2️⃣','Apply','Spread an even layer over nose and oily zones.'],['3️⃣','Wait','Leave on for 10–15 minutes until dry.'],['4️⃣','Remove','Rinse with warm water. Use 1–2x per week.']] },
+  16: { name:'Kojic Acid Brightening Soap', price:199, mrp:349, discount:'Save 43%', rating:'4.5', reviews:36, sold:'350+ sold', badge:'💡 Brightening', tagline:'Daily brightening soap that fades pigmentation and promotes an even skin tone.', emoji:'✨', img:'',
+        benefits:[['✨','Fades Pigmentation','Kojic acid inhibits melanin for brighter skin.'],['💧','Brightens Tone','Visibly evens skin tone with regular use.'],['🌿','Gentle Cleansing','Creamy lather that doesn\'t strip skin.'],['☀️','Glow Boost','Skin looks lighter, clearer, and more radiant.']],
+        ingredients:[['✨','Kojic Acid (1%)','Natural melanin inhibitor from fermentation.'],['🌿','Papaya Extract','Enzymatic exfoliant that brightens naturally.'],['💧','Glycerin','Keeps skin hydrated and supple.']],
+        howto:[['1️⃣','Wet Hands','Lather soap between palms.'],['2️⃣','Apply','Massage gently onto face or body.'],['3️⃣','Wait','Leave on for 30–60 seconds.'],['4️⃣','Rinse','Rinse thoroughly. Use daily. Always follow with SPF.']] },
+  17: { name:'Tea Tree Spot Gel', price:249, mrp:399, discount:'Save 38%', rating:'4.8', reviews:73, sold:'720+ sold', badge:'🌿 Spot Fix', tagline:'Fast-acting spot treatment gel — reduces pimple size and redness overnight.', emoji:'🌿', img:'',
+        benefits:[['🌿','Fast-Acting','Visibly reduces spot size in 6–8 hours.'],['💧','Reduces Redness','Anti-inflammatory action calms inflamed pimples.'],['✅','Spot-Specific','Targeted application for precise treatment.'],['✨','No Residue','Clear gel leaves no white cast or residue.']],
+        ingredients:[['🌿','Tea Tree Oil (5%)','Potent antibacterial that kills acne bacteria.'],['💧','Salicylic Acid (2%)','Penetrates and unclogs the spot from inside.'],['🌿','Aloe Vera','Soothes irritation and redness around the spot.']],
+        howto:[['1️⃣','Clean Skin','Use on cleansed skin.'],['2️⃣','Spot Apply','Apply a tiny dot directly onto the pimple.'],['3️⃣','Leave On','Do NOT rub in — let the gel sit on the spot.'],['4️⃣','Overnight','Best applied at night. Use up to twice daily.']] },
+  18: { name:'Aloe Vera Soothing Gel', price:299, mrp:449, discount:'Save 33%', rating:'4.6', reviews:49, sold:'470+ sold', badge:'🌱 Soothing', tagline:'Calms irritation, soothes redness, and hydrates sensitive or sun-damaged skin.', emoji:'🌱', img:'',
+        benefits:[['🌱','Calms Irritation','99% pure aloe instantly soothes inflamed skin.'],['💧','Deep Hydration','Locks in moisture without feeling heavy.'],['✨','Sun Relief','Cools and heals sun-damaged or burnt skin.'],['🌿','Sensitive Safe','Fragrance-free, suitable for the most sensitive skin.']],
+        ingredients:[['🌱','Aloe Vera (99%)','Pure aloe gel packed with anti-inflammatory compounds.'],['💧','Hyaluronic Acid','Boosts aloe\'s natural hydrating power.'],['🌿','Centella Asiatica','Wound-healing botanical that reduces redness.']],
+        howto:[['1️⃣','Anytime Use','Can be used morning, evening, or after sun exposure.'],['2️⃣','Apply','Spread a generous layer on affected areas.'],['3️⃣','Massage','Gently pat until absorbed.'],['4️⃣','Layer','Can be layered under or over moisturizer.']] },
+  19: { name:'Niacinamide Essence', price:549, mrp:849, discount:'Save 35%', rating:'4.9', reviews:58, sold:'560+ sold', badge:'💎 Pore-Care', tagline:'Minimizes pores, balances sebum, and brightens complexion with 10% Niacinamide.', emoji:'💎', img:'',
+        benefits:[['💎','Minimizes Pores','10% niacinamide significantly tightens pore appearance.'],['💧','Balances Sebum','Regulates oil production for matte, balanced skin.'],['✨','Brightens Complexion','Evens skin tone and fades dark spots.'],['🌿','Strengthens Barrier','Ceramides help rebuild skin\'s protective layer.']],
+        ingredients:[['💎','Niacinamide (10%)','Highest effective concentration for pore minimizing.'],['🌿','Zinc PCA','Pairs with niacinamide for oil control.'],['💧','Panthenol','Moisturising and soothing vitamin B5.']],
+        howto:[['1️⃣','After Cleansing','Apply to freshly cleansed skin.'],['2️⃣','Before Moisturizer','Goes on before heavier cream or moisturizer.'],['3️⃣','Essence Technique','Pat gently into skin — do not rub.'],['4️⃣','AM & PM','Use twice daily for maximum pore-minimizing results.']] },
+  20: { name:'AHA/BHA Chemical Exfoliant', price:649, mrp:999, discount:'Save 35%', rating:'4.8', reviews:41, sold:'400+ sold', badge:'🔬 Resurfacing', tagline:'Resurfaces skin, reduces dullness, and smooths uneven texture with AHA & BHA blend.', emoji:'🧪', img:'',
+        benefits:[['🧪','Resurfaces Skin','AHAs dissolve dead skin cells for smoother texture.'],['✨','Reduces Dullness','Reveals a brighter, refreshed complexion.'],['💧','Unclogs Pores','BHA penetrates pores to clear congestion.'],['🌿','Evens Texture','Smooths rough patches and fine lines.']],
+        ingredients:[['🧪','Glycolic Acid (8%)','AHA that exfoliates and brightens skin surface.'],['🫙','Salicylic Acid (2%)','BHA that clears pores from within.'],['💧','Lactic Acid (5%)','Gentler AHA with hydrating properties.']],
+        howto:[['1️⃣','Evening Only','Use at night, never in the morning without SPF.'],['2️⃣','Start Slowly','2x per week — build up as skin tolerates.'],['3️⃣','Apply after Cleansing','On dry skin, apply with a cotton pad.'],['4️⃣','Do Not Layer','Avoid using with retinol on same night. Always follow with SPF next day.']] }
+};
+
+const urlId = parseInt(new URLSearchParams(window.location.search).get('id')) || 2;
+const p = PRODUCTS[urlId] || PRODUCTS[2];
+
+document.title = `${p.name} – ClearoSkin`;
+document.getElementById('breadcrumb-name').textContent = p.name;
+document.getElementById('product-title').textContent = p.name;
+document.getElementById('product-tagline').textContent = p.tagline;
+document.getElementById('product-badge').textContent = p.badge;
+document.getElementById('product-price').textContent = `₹${p.price}`;
+document.getElementById('product-mrp').textContent = `₹${p.mrp}`;
+document.getElementById('product-discount').textContent = p.discount;
+document.getElementById('product-rating').textContent = p.rating;
+document.getElementById('product-reviews-link').textContent = `${p.reviews} reviews`;
+document.getElementById('rev-score').textContent = `${p.rating}/5`;
+document.getElementById('rev-count').textContent = `${p.reviews} reviews`;
+document.getElementById('product-sold').textContent = `| ${p.sold}`;
+document.getElementById('sticky-name').textContent = p.name;
+document.getElementById('sticky-price').textContent = `₹${p.price}`;
+document.getElementById('sticky-emoji').textContent = p.emoji;
+
+const mainImg = document.getElementById('main-img');
+const mainEmoji = document.getElementById('main-emoji');
+if (p.img) {
+  mainImg.src = p.img; mainImg.alt = p.name; mainImg.style.display = 'block'; mainEmoji.style.display = 'none';
+  const thumbsHtml = `<div class="gallery-thumb active" onclick="switchImg(this,'${p.img}',null)"><img src="${p.img}" alt="${p.name}" /></div>`;
+  document.getElementById('gallery-thumbs').innerHTML = thumbsHtml;
+} else {
+  mainEmoji.textContent = p.emoji;
+  document.getElementById('gallery-thumbs').innerHTML = `<div class="gallery-thumb active">${p.emoji}</div>`;
+}
+
+function bItems(arr) { return arr.map(([ico,title,desc])=>`<div class="b-item"><span class="ico">${ico}</span><div><strong>${title}</strong><span>${desc}</span></div></div>`).join(''); }
+document.getElementById('tab-benefits').innerHTML = bItems(p.benefits);
+document.getElementById('tab-ingredients').innerHTML = bItems(p.ingredients) + '<p style="margin-top:12px;font-size:0.78rem;color:var(--text-light);">*Free from: Parabens, SLS, Sulfates, Fragrance, Mineral Oils</p>';
+document.getElementById('tab-how-to-use').innerHTML = bItems(p.howto);
+
+document.getElementById('reviews-list').innerHTML = `
+  <div style="background:var(--white);border-radius:var(--radius-md);padding:20px;border:1px solid var(--border);margin-bottom:16px;">
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px;"><strong>${['Priya S.','Rahul K.','Sneha V.'][0]} — Mumbai</strong><span style="font-size:0.78rem;color:var(--text-light);">⭐⭐⭐⭐⭐  March 12, 2026</span></div>
+    <p style="font-size:0.88rem;color:var(--text-mid);">The ${p.name} genuinely transformed my skin. Noticed visible results within 3 weeks. Highly recommend!</p>
+  </div>
+  <div style="background:var(--white);border-radius:var(--radius-md);padding:20px;border:1px solid var(--border);margin-bottom:16px;">
+    <div style="display:flex;justify-content:space-between;margin-bottom:10px;"><strong>Aisha M. — Bangalore</strong><span style="font-size:0.78rem;color:var(--text-light);">⭐⭐⭐⭐⭐  March 5, 2026</span></div>
+    <p style="font-size:0.88rem;color:var(--text-mid);">Been using ${p.name} for 5 weeks — skin texture improved massively. Fast shipping too. Will repurchase!</p>
+  </div>`;
+
+function switchImg(thumb, src, emoji) {
+  if (src) { mainImg.src = src; mainImg.style.display='block'; mainEmoji.style.display='none'; }
+  else { mainEmoji.textContent=emoji; mainEmoji.style.display='block'; mainImg.style.display='none'; }
+  document.querySelectorAll('.gallery-thumb').forEach(t=>t.classList.remove('active'));
+  thumb.classList.add('active');
+}
+function selectVariant(btn) { document.querySelectorAll('.variant-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
+function changeQty(dir) { const i=document.getElementById('qty'); const v=parseInt(i.value)+dir; if(v>=1&&v<=10) i.value=v; }
+function addToCartPage() { const qty=parseInt(document.getElementById('qty').value); const btn=document.getElementById('page-atc-btn'); for(let i=0;i<qty;i++) addToCart(urlId,p.name,p.price,btn); }
+function switchTab(btn,tabId) { document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); btn.classList.add('active'); document.getElementById(tabId).classList.add('active'); }
+window.addEventListener('scroll',()=>{ document.getElementById('sticky-atc').classList.toggle('visible',window.scrollY>400); });
+const socialMessages=['14 people are viewing this right now','🔥 Someone just ordered!','⚡ Only 24 units left','👀 Just added to cart','🔥 23 orders in last 24 hours'];
+let tickerIdx=0; setInterval(()=>{ tickerIdx=(tickerIdx+1)%socialMessages.length; const el=document.getElementById('social-proof-ticker'); if(el) el.textContent=socialMessages[tickerIdx]; },4000);
+</script>
+</body>
+</html>

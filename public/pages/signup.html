@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up – ClearoSkin</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Clearo<span>Skin</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/#collections">Collections</a></li>
+      <li><a href="/#products">Shop</a></li>
+      <li><a href="index.html#about">Our Story</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#" class="nav-icon-btn" title="Search" id="search-btn">🔍</a>
+      <a href="/public/pages/cart.html" class="nav-icon-btn" title="Cart">🛒<span class="cart-count" id="cart-count">0</span></a>
+      <a href="/public/pages/login.html" class="btn btn-outline btn-sm" id="nav-login-btn">Login</a>
+      <a href="/public/pages/signup.html" class="btn btn-primary btn-sm" id="nav-signup-btn">Sign Up</a>
+      <div class="hamburger" id="hamburger-btn"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Nav -->
+<div id="mobile-nav">
+  <div class="mobile-nav-bg" id="mobile-nav-bg"></div>
+  <div class="mobile-nav-panel">
+    <div class="mobile-nav-header">
+      <span class="nav-logo">Clearo<span>Skin</span></span>
+      <span class="close-btn" id="close-nav">✕</span>
+    </div>
+    <nav class="mobile-nav-links">
+      <a href="/">🏠 Home</a>
+      <a href="/#collections">✨ Collections</a>
+      <a href="/#products">🛍️ Shop All</a>
+      <a href="/public/pages/cart.html">🛒 Cart</a>
+      <a href="/public/pages/login.html">🔑 Login</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     AUTH SECTION (SIGNUP)
+════════════════════════════════════════ -->
+<section class="auth-section">
+  <div class="auth-container" style="opacity: 1; transform: none;">
+    <h2 class="auth-title">Create an Account</h2>
+    <p class="auth-sub">Join ClearoSkin today for exclusive benefits</p>
+    
+    <div id="signup-error" class="auth-error" style="display: none;"></div>
+    <div id="signup-success" class="auth-success" style="display: none;"></div>
+    
+    <form id="signup-form" class="auth-form" onsubmit="handleSignup(event)">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your full name" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Create a password" required minlength="6" />
+      </div>
+      
+      <button type="submit" class="btn btn-primary auth-btn">Sign Up</button>
+    </form>
+    
+    <div class="auth-footer">
+      <p>Already have an account? <a href="/public/pages/login.html">Log In</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="nav-logo">Clearo<span>Skin</span></div>
+      <p>ClearoSkin is built to help people regain confidence through clear, healthy skin.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 ClearoSkin. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="../js/script.js"></script>
+</body>
+</html>
